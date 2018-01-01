@@ -13,7 +13,7 @@
 # limitations under the License.
 import unittest
 
-from PyRuSH.RuSH import RuSH, initLogger
+from PyRuSH.RuSH import RuSH
 
 
 class TestRuSH(unittest.TestCase):

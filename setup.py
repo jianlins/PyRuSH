@@ -1,6 +1,7 @@
 from setuptools import setup
 from codecs import open
 from os import path
+
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README'), encoding='utf-8') as f:
     long_description = f.read()
@@ -30,5 +31,5 @@ setup(
     install_requires=[
         'PyFastNER'
     ],
-    data_files=[('demo_data', ['conf/crule_test.tsv'])],
+    data_files=[('demo_data', ['conf/rush_rules.tsv', 'conf/logging.ini'])],
 )
