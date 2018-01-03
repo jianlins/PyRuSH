@@ -302,23 +302,34 @@ from \d+ to \d+	3	stend
 \n(\(\d\)\s+\C	0	stbegin
 \n("\C	0	stbegin
 
-
+\a.\s+(This 	0	stbegin
+\a.\s+(That 	0	stbegin
+\a.\s+(The 	0	stbegin
+\a.\s+(She 	0	stbegin
+\a.\s+(He 	0	stbegin
+\a.\s+(Her 	0	stbegin
+\a.\s+(His 	0	stbegin
+\a.\s+(They 	0	stbegin
+\a.\s+(Their 	0	stbegin
+\a.\s+(But 	0	stbegin
+\a.\s+(Now 	0	stbegin
+\a.\s+(Discharge 	0	stbegin
 
 
 (\a)\s+\n+-	2	stend
 \c(\c)\n+ \C	2	stend
-\c(.)\s+This 	2	stend
-\c(.)\s+That 	2	stend
-\c(.)\s+The 	2	stend
-\c(.)\s+She 	2	stend
-\c(.)\s+He 	2	stend
-\c(.)\s+Her 	2	stend
-\c(.)\s+His 	2	stend
-\c(.)\s+They 	2	stend
-\c(.)\s+Their 	2	stend
-\c(.)\s+But 	2	stend
-\C(.)\s+Now 	2	stend
-\C(.)\s+Discharge 	2	stend
+\a(.)\s+This 	2	stend
+\a(.)\s+That 	2	stend
+\a(.)\s+The 	2	stend
+\a(.)\s+She 	2	stend
+\a(.)\s+He 	2	stend
+\a(.)\s+Her 	2	stend
+\a(.)\s+His 	2	stend
+\a(.)\s+They 	2	stend
+\a(.)\s+Their 	2	stend
+\a(.)\s+But 	2	stend
+\a(.)\s+Now 	2	stend
+\a(.)\s+Discharge 	2	stend
  mL(.)\s+The 	2	stend
 \c(.)\s+I	2	stend
 \d(.)\s+\C	2	stend

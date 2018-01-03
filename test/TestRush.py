@@ -72,6 +72,9 @@ class TestRuSH(unittest.TestCase):
         # self.printDetails(sentences, input_str)
         pass
 
-
+    def test6(self):
+        input_str='''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected Veterans.'''
+        sentences = self.rush.segToSentenceSpans(input_str)
+        self.printDetails(sentences, input_str)
 if __name__ == '__main__':
     unittest.main()
