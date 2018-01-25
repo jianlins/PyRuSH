@@ -8,12 +8,12 @@ with open(path.join(here, 'README'), encoding='utf-8') as f:
 setup(
     name='PyRuSH',
     packages=['PyRuSH'],  # this must be the same as the name above
-    version='1.0.1',
+    version='1.0.2',
     description='A fast implementation of RuSH (Rule-based sentence Segmenter using Hashing).',
     author='Jianlin',
     author_email='jianlinshi.cn@gmail.com',
     url='https://github.com/jianlins/PyRuSH',  # use the URL to the github repo
-    download_url='https://github.com/jianlins/PyRuSH/archive/1.0.1.zip',  # I'll explain this in a second
+    download_url='https://github.com/jianlins/PyRuSH/archive/1.0.2.zip',  # I'll explain this in a second
     keywords=['PyFastNER', 'ner', 'regex'],
     long_description=long_description,
     classifiers=[
