@@ -211,8 +211,8 @@
 \n(\d.\C	0	stbegin
 \n\s+(\d.\s+\C	0	stbegin
 \n\s+(\d\d.\s+\C	0	stbegin
-\n\d.)\s+(\C	0	stbegin
-\n\d\d.)\s+(\C	0	stbegin
+\n\d.\)\s+(\C	0	stbegin
+\n\d\d.\)\s+(\C	0	stbegin
 \c:\n+(\a	0	stbegin
 \s+\s+(\d\)\s+\C	0	stbegin
 \s+\s+(\d\d\)\s+\C	0	stbegin
