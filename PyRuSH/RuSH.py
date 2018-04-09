@@ -27,8 +27,8 @@ def initLogger():
         config_file = 'conf/logging.ini'
     if not os.path.isfile(config_file):
         config_file = 'logging.ini'
-    with open(config_file, 'w') as f:
-        f.write('''[loggers]
+        with open(config_file, 'w') as f:
+            f.write('''[loggers]
 keys=root
 
 [handlers]
