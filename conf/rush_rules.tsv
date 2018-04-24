@@ -204,7 +204,7 @@
 .\s+(D)ischarge 	0	stbegin
 
 \n(\(-\)\s+\C	0	stbegin
-\n(\(+\)\s+\C	0	stbegin
+#\n(\(+\)\s+\C	0	stbegin
 \n        (\d	0	stbegin
 \C:\n+(\d	0	stbegin
 \n(\d.\s+)\C	0	stbegin
@@ -252,7 +252,7 @@
 \s\s(\d\)\C	0	stbegin
 \s\s(\d\)?\s+\C	0	stbegin
 
-\c)\w+\d\)\s+\d+\s+(\c	0	stbegin
+\c\)\w+\d\)\s+\d+\s+(\c	0	stbegin
 
 \c\w+(\d\)\C	0	stbegin
 \d\)\C+\w+(\d\)\c	0	stbegin
