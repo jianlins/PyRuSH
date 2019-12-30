@@ -24,7 +24,7 @@ pip install PyRuSH
 
 A standalone RuSH class is available to be directly used in your code. 
 ```python
-from PyRuSH.RuSH import RuSH
+from PyRuSH import RuSH
 input_str = "The patient was admitted on 03/26/08\n and was started on IV antibiotics elevation" +\
              ", was also counseled to minimizing the cigarette smoking. The patient had edema\n\n" +\
              "\n of his bilateral lower extremities. The hospital consult was also obtained to " +\
