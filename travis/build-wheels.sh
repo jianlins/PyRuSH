@@ -12,7 +12,7 @@ PYBINS=${ARGS[@]:1}
 echo "${PYBINS[@]}"
 for PYBIN in ${PYBINS[@]};do
   PYBIN="/opt/python/${PYBIN}/bin"
-  echo ${PYBIN}
+  echo "${PYBIN}"
   "${PYBIN}/pip" install -r -q /io/dev-requirements.txt
   "${PYBIN}/python" -m spacy download en
   "${PYBIN}/pip" wheel /io/ -w wheelhouse/
@@ -28,7 +28,6 @@ for whl in wheelhouse/*.whl; do
 done
 
 ls /io/wheelhouse -l
-cd /io/wheelhouse
 # Install packages and test
 for PYBIN in ${PYBINS[@]}; do
     PYBIN="/opt/python/${PYBIN}/bin"
