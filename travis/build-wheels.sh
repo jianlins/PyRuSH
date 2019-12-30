@@ -23,6 +23,8 @@ for whl in wheelhouse/*.whl; do
     auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
 done
 
+ls /io/wheelhouse -l
+
 # Install packages and test
 for PYBIN in ${PYBINS[@]}; do
     PYBIN="/opt/python/${PYBIN}/bin"
