@@ -7,6 +7,8 @@ PYBIN=/opt/python/$1/bin
 PLAT=$2
 # Compile wheels
 "${PYBIN}/pip" install -r /io/dev-requirements.txt
+"${PYBIN}/pip" uninstall -y spacy thinc cymem murmurhash preshed ujson
+"${PYBIN}/pip" install spacy
 "${PYBIN}/python" -m spacy download en
 "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 
