@@ -5,6 +5,7 @@ cpdef cpredict(docs, sentencizer_fun):
     cdef int s
     cdef int t
     guesses = []
+    print(type(sentencizer_fun))
     for doc in docs:
         if len(doc)==0:
             guesses.append([])
@@ -27,6 +28,14 @@ cpdef cpredict(docs, sentencizer_fun):
                 s+=1
         guesses.append(doc_guesses)
     return guesses
+
+cpdef csegment(doc, sentencizer_fun):
+    for token in doc:
+        token.is_sent_start = False
+    sentence_spans = sentencizer_fun(doc.text)
+    for span in sentence_spans:
+        sent = doc.char_span(span.begin, span.end)
+        sent[0].is_sent_start = True
 
 cpdef cset_annotations(docs, batch_tag_ids, tensors=None):
     if isinstance(docs, Doc):

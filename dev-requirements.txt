@@ -1,2 +1,2 @@
-spacy>=2.2.0
+spacy>=2.2.2
 PyFastNER>=1.0.8b1
