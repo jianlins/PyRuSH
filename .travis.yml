@@ -47,13 +47,13 @@ matrix:
         PLAT=manylinux2010_x86_64
 
 install:
-  - /opt/python/${TRAVIS_PY36}/bin/pip install twine
-  - /opt/python/${TRAVIS_PY36}/bin/pip install -r dev-requirements.txt
+  - /opt/python/${TRAVIS_PY36}/bin/pip install -q twine
+  - /opt/python/${TRAVIS_PY36}/bin/pip install -q -r dev-requirements.txt
   - docker pull $DOCKER_IMAGE
 
 script:
   - chmod 775 travis/build-wheels.sh
-  - cat /io/travis/build-wheels.sh
+  - cat travis/build-wheels.sh
   - docker run --name "aaa36" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh $PLAT ${PY36} ${PY37} ${PY38}"
   - ls wheelhouse/
 

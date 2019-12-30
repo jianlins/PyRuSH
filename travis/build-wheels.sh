@@ -13,7 +13,7 @@ echo "${PYBINS[@]}"
 for PYBIN in ${PYBINS[@]};do
   PYBIN="/opt/python/${PYBIN}/bin"
   echo "${PYBIN}"
-  "${PYBIN}/pip" install -r -q /io/dev-requirements.txt
+  "${PYBIN}/pip" install -q -r /io/dev-requirements.txt
   "${PYBIN}/python" -m spacy download en
   "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 done
