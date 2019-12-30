@@ -1,17 +1,13 @@
-# PyRuSH
+PyRuSH
 =========
 
-PyRuSH is the python implementation of `RuSH <https://github.com/jianlins/RuSH>`__(**Ru**le-based sentence **S**egmenter using **H**ashing), which is orginally developed
-using Java. RuSH is an efficient, reliable, and easy adaptable rule-based sentence segmentation
-solution. It is specifically designed to handle the telegraphic written text in clinical note. It leverages a nested
-hash table to execute simultaneous rule processing, which reduces the impact of the rule-base growth
-on execution time and eliminates the effect of rule order on accuracy. 
+PyRuSH is the python implementation of `RuSH <https://github.com/jianlins/RuSH>`_ (**Ru** le-based sentence **S** egmenter using **H** ashing), which is originally developed using Java. RuSH is an efficient, reliable, and easy adaptable rule-based sentence segmentation solution. It is specifically designed to handle the telegraphic written text in clinical note. It leverages a nested hash table to execute simultaneous rule processing, which reduces the impact of the rule-base growth on execution time and eliminates the effect of rule order on accuracy.
 
 If you wish to cite RuSH in a publication, please use:
 
->Jianlin Shi ; Danielle Mowery ; Kristina M. Doing-Harris ; John F. Hurdle.RuSH: a Rule-based Segmentation Tool Using Hashing for Extremely Accurate Sentence Segmentation of Clinical Text. AMIA Annu Symp Proc. 2016: 1587. 
+Jianlin Shi ; Danielle Mowery ; Kristina M. Doing-Harris ; John F. Hurdle.RuSH: a Rule-based Segmentation Tool Using Hashing for Extremely Accurate Sentence Segmentation of Clinical Text. AMIA Annu Symp Proc. 2016: 1587.
 
-The full text can be found [here](https://knowledge.amia.org/amia-63300-1.3360278/t005-1.3362920/f005-1.3362921/2495498-1.3363244/2495498-1.3363247?timeStamp=1479743941616):
+The full text can be found `here <https://knowledge.amia.org/amia-63300-1.3360278/t005-1.3362920/f005-1.3362921/2495498-1.3363244/2495498-1.3363247?timeStamp=1479743941616>`_.
 
 
 
