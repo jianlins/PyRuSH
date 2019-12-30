@@ -1,15 +1,14 @@
 from spacy import util
 from spacy.pipeline import Sentencizer
 from PyRuSH import RuSH
-from spacy.tokens import Doc, Token
 
 from .StaticSentencizerFun import cpredict, cset_annotations
 
 
 class PyRuSHSentencizer(Sentencizer):
-    def __init__(self, rules_path: str = ''):
+    def __init__(self, rules_path: str = '', max_repeat: int = 50, auto_fix_gaps: bool = True):
         self.rules_path = rules_path
-        self.rush = RuSH(self.rules_path)
+        self.rush = RuSH(rules_path=rules_path, max_repeat=max_repeat, auto_fix_gaps=auto_fix_gaps)
 
     @classmethod
     def from_nlp(cls, nlp, **cfg):
