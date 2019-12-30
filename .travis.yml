@@ -49,9 +49,7 @@ install:
 
 script:
   - chmod 775 travis/build-wheels.sh
-  - docker run --name "aaa36" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY36} $PLAT"
-  - docker run --name "aaa37" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY37} $PLAT"
-  - docker run --name "aaa38" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY38} $PLAT"
+  - docker run --name "aaa36" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh $PLAT ${PY36} ${PY37} ${PY38}"
   - ls wheelhouse/
 
 
