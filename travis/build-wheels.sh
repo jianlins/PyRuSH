@@ -20,7 +20,7 @@ done
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
-    if [[ $whl == PyRuSH* ]]; then
+    if [[ $whl == wheelhouse/PyRuSH* ]]; then
       auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
     else
       rm $whl
