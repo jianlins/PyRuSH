@@ -2,4 +2,4 @@ build
 dist
 .cache
 .idea
-PyFastNER.egg-info
+*.egg-info

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import unittest
+import os
 
 from PyRuSH import RuSH
 
@@ -19,7 +20,8 @@ from PyRuSH import RuSH
 class TestRuSH(unittest.TestCase):
 
     def setUp(self):
-        self.rush = RuSH('../conf/rush_rules.tsv')
+        pwd = os.path.dirname(os.path.abspath(__file__))
+        self.rush = RuSH(str(os.path.join(pwd,'../conf/rush_rules.tsv')))
 
     def test1(self):
         input_str = 'Can Mr. K check it. Look\n good.\n'
