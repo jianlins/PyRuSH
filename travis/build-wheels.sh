@@ -20,14 +20,18 @@ done
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
-    auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+    if [[ "$whl" == "PyRuSH*" ]]; then
+      auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+    else
+      rm "$whl"
+    fi
 done
 
 ls /io/wheelhouse -l
-
+cd /io/wheelhouse
 # Install packages and test
 for PYBIN in ${PYBINS[@]}; do
     PYBIN="/opt/python/${PYBIN}/bin"
-    "${PYBIN}/pip" install python-manylinux-demo --no-index -f /io/wheelhouse
+    "${PYBIN}/pip" install PyRuSH --no-index -f /io/wheelhouse
     (cd "$HOME"; "${PYBIN}/nosetests" PyRuSH)
 done
