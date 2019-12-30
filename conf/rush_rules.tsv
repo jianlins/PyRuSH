@@ -204,6 +204,7 @@
 .\s+(D)ischarge 	0	stbegin
 
 \n(\(-\)\s+\C	0	stbegin
+#\n(\(+\)\s+\C	0	stbegin
 \n        (\d	0	stbegin
 \C:\n+(\d	0	stbegin
 \n(\d.\s+)\C	0	stbegin
