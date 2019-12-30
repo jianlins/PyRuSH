@@ -204,7 +204,6 @@
 .\s+(D)ischarge 	0	stbegin
 
 \n(\(-\)\s+\C	0	stbegin
-\n(\(+\)\s+\C	0	stbegin
 \n        (\d	0	stbegin
 \C:\n+(\d	0	stbegin
 \n(\d.\s+)\C	0	stbegin
@@ -917,7 +916,7 @@ Since)\s+\n+\d\d\d\d-\d\d-\d\d\s\s\s+	3	stend
 
 
 Cardiac\w+Surgery\w+Intensive\w+Care\w+Unit	3	stend
-\C\c+\w+Cardiac\w+Surgery\w+Intensive\w+Care\w+Unit	3	stend
+\C\c+\w+Cardiac\w+Surge\(+ry\w+Intensive\w+Care\w+Unit	3	stend
 Intensive\w+Care\w+Unit	3	stend
 \C\c+\w+Intensive\w+Care\w+Unit	3	stend
 Emergency\w+Department	3	stend

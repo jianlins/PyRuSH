@@ -11,11 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from PyFastNER.FastCNER import FastCNER
-from PyFastNER.IOUtils import Span
+from PyFastNER import FastCNER
+from PyFastNER import Span
 import logging
 import logging.config
 import os.path
+import string
 
 BEGIN = 'stbegin'
 END = 'stend'
@@ -59,10 +60,11 @@ initLogger()
 
 class RuSH:
 
-    def __init__(self, rule_str, max_repeat=50):
+    def __init__(self, rule_str: str, max_repeat: int = 50, auto_fix_gaps: bool = True):
         self.fastner = FastCNER(rule_str, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
         self.logger = logging.getLogger(__name__)
+        self.auto_fix_gaps = auto_fix_gaps
         # for old RuSh rule format (doesn't have PSEUDO and ACTUAL column), make the conversion.
         if not self.fastner.full_definition:
             self.backCompatableParseRule()
@@ -116,6 +118,9 @@ class RuSH:
             elif begins[i].begin < st_end:
                 continue
 
+            if self.auto_fix_gaps and len(output) > 0 and st_begin > output[-1].end:
+                self.fix_gap(output, text, output[-1].end, st_begin)
+
             for k in range(j, len(ends)):
                 if i < len(begins) - 1 and k < len(ends) - 1 and begins[i + 1].begin < ends[k].begin + 1:
                     break
@@ -141,3 +146,25 @@ class RuSH:
                     'Sentence({0}-{1}):\t>{2}<'.format(sentence.begin, sentence.end, text[sentence.begin:sentence.end]))
 
         return output
+
+    @staticmethod
+    def fix_gap(sentences: [], text: str, previous_end: int, this_begin: int):
+        counter = 0
+        begin = 0
+        end = 0
+        gap_chars = text[previous_end:this_begin]
+        for i in range(0, this_begin - previous_end):
+            this_char = gap_chars[i]
+            if this_char.isalnum():
+                end = i
+                counter += 1
+                if begin == 0:
+                    begin = i
+            elif this_char in string.punctuation:
+                end = i
+        # An arbitrary number to decide whether the gap is likely to be a sentence or not
+        if counter > 5:
+            begin += previous_end
+            end = end + previous_end + 1
+            sentences.append(Span(begin, end))
+        pass

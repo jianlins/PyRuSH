@@ -1,0 +1,62 @@
+# Configure appveyor for builds.
+
+environment:
+  # Appveyor machines come with miniconda already installed.
+  PYPI_LOGIN: jianlins
+  DEPLOY_TEST: true
+  PYPI_PWD:
+    secure: m4olevjgBYrOI3NszBfruw==
+
+
+  matrix:
+    # Unfortunately, compiler/SDK configuration for 64 bit builds depends on
+    # python version. Right now conda build does not configure the SDK, and
+    # the appveyor setup only sets up the SDK once, so separate by python
+    # versions.
+    - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python37-x64"
+    - PYTHON: "C:\\Python38-x64"
+
+# We always use a 64-bit machine, but can build x86 distributions
+# with the TARGET_ARCH variable.
+platform:
+  - x64
+
+install:
+  - "%PYTHON%\\python.exe -m pip install -q wheel twine cython"
+  - "%PYTHON%\\python.exe -m pip install -r dev-requirements.txt"
+
+
+# Skip .NET project specific build phase.
+build: off
+
+
+test_script:
+  # Not much of a real test yet, just try to build myself...
+  #    - "%CMD_IN_ENV% conda build extruder.recipe"
+  - "%PYTHON%\\python.exe setup.py build_ext -i"
+  - "%PYTHON%\\python.exe -m unittest tests/TestFastCNER.py"
+
+after_test:
+  # This step builds your wheels.
+  # Again, you only need build.cmd if you're building C extensions for
+  # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
+  # interpreter
+  - "%PYTHON%\\python.exe setup.py bdist_wheel"
+
+artifacts:
+  # bdist_wheel puts your built wheel in the dist directory
+  - path: dist\*
+
+on_success:
+  - echo %APPVEYOR_REPO_TAG%
+  # Write the output file location to a file...cannot simply use conda build --output
+  # because astropy_helpers prints out a message when it is freezing the version number during setup.
+  #    - python -c "from conda_build.api import get_output_file_path; p=get_output_file_path('extruder.recipe'); f=open('to_upload.txt', 'wb');f.write(p)"
+  # ...so that we can set a variable to the name of that output file.
+  - echo %BUILT_PACKAGE%
+  - dir dist
+  - # If this build is because of a tag make the conda package and upload it to test.pypi.org
+  - cmd: if "%DEPLOY_TEST%"=="true" (if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% --repository-url https://test.pypi.org/legacy/ dist/*.whl) else (echo "Not deploying because not a tagged commit.")) else (echo 'Not test deploy, not upload to test.pypi.org')
+  - # deploy to pypi.org
+  - cmd: if "%DEPLOY_TEST%"=="false" (if "%APPVEYOR_REPO_TAG%"=="true" (%PYTHON%\\python.exe  -m twine upload -u %PYPI_LOGIN% -p %PYPI_PWD% dist/*.whl) else (echo "Not deploying because not a tagged commit.")) else (echo 'test deploy, not upload to pypi.org')
