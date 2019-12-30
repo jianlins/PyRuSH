@@ -3,3 +3,6 @@ dist
 .cache
 .idea
 *.egg-info
+*.so
+*.c
+*.cpp

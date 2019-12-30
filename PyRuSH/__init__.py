@@ -13,4 +13,5 @@
 # limitations under the License.
 
 from .RuSH import RuSH, BEGIN, END
+from .PyRuSHSentencizer import PyRuSHSentencizer
 from .version import __version__

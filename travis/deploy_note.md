@@ -1,0 +1,2 @@
+Travis deploy triggered on tag.
+Note: need to commit and push without tag first. After travis processed, then add then add tag, push tag second. Otherwise, the tagged version won't be updated in travis vm when compiling. 

@@ -60,7 +60,7 @@ initLogger()
 
 class RuSH:
 
-    def __init__(self, rule_str: str, max_repeat: int = 50, auto_fix_gaps: bool = True):
+    def __init__(self, rule_str: str = '', max_repeat: int = 50, auto_fix_gaps: bool = True):
         self.fastner = FastCNER(rule_str, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
         self.logger = logging.getLogger(__name__)
@@ -168,3 +168,4 @@ class RuSH:
             end = end + previous_end + 1
             sentences.append(Span(begin, end))
         pass
+

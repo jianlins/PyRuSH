@@ -1,0 +1,86 @@
+notifications:
+  email: false
+os:
+  - linux
+env:
+  global:
+    - secure: P6c1spkY+mxyZKX+OIaUzcoJLLfZCxBEj6e/ZVThO6u4IGOoFajceQ/iXsaXLtoBhSqkbVMNs1YWqGFD8MLhBvrTY3DRQAKvavT38Z1tM5Vd91KzSgZkNRbNMswRu09STop2Eb0rl9iK81i+Hgsq3KTXtbOMrMCqJtpKOlWasvF5ZrMmwS6DXyIPW4ow671O4s2yKtkfXt3NGiX+GBlTE4ed6BJcrZ072HVR2uCg4vb1kPB5CH3Mz+r7bbVU7EY8QsUke20ZtHX1c3NErN5RSHrbLKujIeo21gdntv8nVldVX5iYMbzStqJyBJ8tmesstv3XUfMkAHnB0CRdVLm1O2fVMDnYehEWxbtGbBBpcrOG/T3U4FPKffB3Ao0uIh+k2uqPBdP4mEcqd6rEo7PdSlC/p6zNnw+JpqdQ0utHwBhIbeELCi1pytKRbHI4G+7UlJZE+Tmw/BHnPDzQs9HjZVyzDjVarfS2xpdhrogGJlCkpxz3eXWN8WbsTdUExZaiFGeZ41TgIyaGaEkrMXA3iLJRzI3VfUAueSUt1VVq8KKHLa1qKt2vn0Dx/3oXTTRz4Nl9Z5sayi68XccVbyjbvv/0SDGQAvd/7/ZhlidW9xPbJtjc6CG6UWRTRkm6bSJQhQ1lq1VsYmPtzCqXqIVNXKINS/j3CvvKla0PejQp9U4=
+    - secure: 22S/8zpvjldEjolbeMBLnq/0iXBKMVjFVqVYVEzZbBgdvnbhTWwa9B9mLVHhOwnl8RNFB2P0qTI+5pz8SqL9tf4G+hw/h0bG7OW8cSnMwyp07yNbZrn/9cxzrWhlQn3mLxeOFiNDM1eZ5BmTFJca3roF4KrZ3OVq59ibmCAhe8KY+TqOuf5600nGmDHtVtEQxApyIUUm9VQAKrj1Y0ihJGLF5RLSXODKXTGn2nEfRxrDDf2JYgZWrQ9cCkRC/NpNGpaaXyPC8SXp1UtPAKsDrfVjnh5iejMRLxWTy7oFkrM3DP8wCBCGeiVTyF02mOR0U5ykzd8ydkBeWgSQx1fCXKHXXyzzkqgLvYcnpfPY3UEXqjEO1OnWDsA8rbzgyvQzvuWDP35Yt221t6bo7uqcySMZl1QA+XEnXFVgAroY//7Owy5PNlX5HCWIl0xRBktBNfsZIy/Ff56eqglqL8nE5V4cqISqF5FYQwsO+kQWBFynQit2uUvphEc6ptJPng6qeOtDEd8roo5YcapfuVzphNzwQh713B8cfnAwFrgkfgOo52Ok1Qtn2/4t/97XghFe1Ui9oXgdQ++VZ4KiJgA/dlmXSTyWUI2+nTxSOjNVlv0VZodza85wF7dDFbLLYtziCqx+g+LQdaJFB3ww/ro/W9yLM9ze89xlxDfdR92Rz0M=
+    - secure: oGZRRq2qRwO8UDimsfTwxiAhWYDKM/tR81AmTUaypra6qKJ/fU6dWjYrfQ7tw4BvRyR7wOCr2dV0J2D20G1e/QbtVASJzyU4crNcmz8p7Xe1ClVn6dPOEtp9cLjif4A0tMGZOxhEnb4gvv+yXKPUQRcSC3vgfPKVbHQJQuFGa87VpmXdwsKIIMNmq35rrjHdMbAhAsRaLYfXdeJynSvsshrmG1B5AvcIIQgTIHl+524500caX852O88vzzbyidP2eWTWz4ea3p+fpNtUahLHiQPi+oLjmqECbVdMi92qEuzySnIhjcxdItgwSa2IHCfStW+yPxvrcH7UWtOcjX9lM5+gPYsi0t6l6wuVObPVqigY9qCOfMhQtw2DZN9qRoVwQQeC9sGmyivK+hGYXSahtuGF+9C3AVT7SIsgRGqVWPh73r+laMCRnSfi1+hyBy7gKTsboT5hx+rFSVAzuNCoXooJTrMeM1QQEGOgfHNPrYR8idUnLRq2xMtsAgSN2NU0zQxDJV+CJFEZRq9Ly0JQCylLFtMRUDfH16jb6VMwtdkvfpMoDslkZ9me5p126J8vdSlgr7ceH1sM3wul8uILFT4ZVPNeVRyqFP1OFNQpa3YA+sXMzMzshEVDw4NVdolQcMoBC83UkzSsLJQUnOUEVh1mhuFdyVnQuWykndPS7Ac=
+    - PROJECT_NAME=PyRuSH
+    - GITHUB_REPO_NAME=jianlins/PyRuSH
+    - CONDA_PKG_NAME_PY=PyRuSH
+    - PYPI_LOGIN=jianlins
+    - PY35="cp35-cp35m"
+    - PY36="cp36-cp36m"
+    - PY37="cp37-cp37m"
+    - PY38="cp38-cp38"
+    - TRAVIS_PY36=3.6.7
+    - TRAVIS_PY37=3.7
+    - DEPLOY_TEST=true
+    - secure: "R3qOon0CO+WtDdD7eDr2eG1VEgfGrhHqFyFdP4w75e8IeSfS6zASuFdYkdplHaGDPpCwcAgCP3Acf1mVsK7V+0Eu3Cz6qXpcicDUXJ2QaP59+PfLTtkeRPVhIvJe+SqtQBGdEGTHBcC5Xa17XK9KPLUrt9mOsSArpVNAf85DpZQ/nRlj2VHuXmdvfpEX4cPwveqHn3gCveJe9tRLxXPL35GmOr5wZduVwVGCEWZNmuP7CbJPVYJH+APIWDVjpZd3njfXiulno/nDC7ti68z/1QFzahnxVlm4/VpXCw4UvDNa0XPDDBJ0zCVJ9k+E7Nx2xUkvmhObNvqj2FVk4CFzzcqYImetSO5A6/n1KVnnNTgBoE+YIsMoCHV6IjB8hGYpuVPg2eojLcZBnX2Z0MDNsCj3lizDfyO0G6iMmUPXKPSH+cIO0YOqh8qF6AtYFOnC7CNr5F5IGzQy4cttiX13IJYg1MPqN83qPvcLNGP3MZAG8ksDYvNwqCKu/RWlh42X7njTzzo/pVOCoMYvQIp7fSMLSvkrlXV+W0hME75C9y4MhYBKuybh4xj+rDLrAMlRyRA7u9dctXZNMTV0N8v4vvzcjYZRjZUeBOI6Hd5bvk/RVK+ArONhGARSkIiFUG2a+u2LueJX/9O7/VOIuSCuyCWOS5bbllvo+803gJbd7pU="
+
+# encrypt PYPI_PWD
+matrix:
+  include:
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+        PLAT=manylinux1_x86_64
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+        PRE_CMD=linux32
+        PLAT=manylinux1_i686
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
+        PLAT=manylinux2010_x86_64
+
+install:
+  - /opt/python/${TRAVIS_PY36}/bin/pip install twine
+  - /opt/python/${TRAVIS_PY36}/bin/pip install -r dev-requirements.txt
+  - docker pull $DOCKER_IMAGE
+
+script:
+  - chmod 775 travis/build-wheels.sh
+  - docker run --name "aaa36" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY36} $PLAT"
+  - docker run --name "aaa37" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY37} $PLAT"
+  - docker run --name "aaa38" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PY38} $PLAT"
+  - ls wheelhouse/
+
+
+
+deploy:
+  # deploy develop to pypi.org
+  - provider: script
+    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
+    on:
+      repo: ${GITHUB_REPO_NAME}
+      tags: true
+      condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
+
+  - provider: script
+    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*tar.gz
+    on:
+      repo: ${GITHUB_REPO_NAME}
+      tags: true
+      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
+
+  # deploy develop to test.pypi.org
+  - provider: script
+    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
+    on:
+      repo: ${GITHUB_REPO_NAME}
+      tags: true
+      condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"
+
+  - provider: script
+    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
+    on:
+      repo: ${GITHUB_REPO_NAME}
+      tags: true
+      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"
