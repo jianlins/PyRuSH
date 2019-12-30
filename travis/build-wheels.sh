@@ -10,7 +10,7 @@ PLAT=${ARGS[0]}
 PYBINS=${ARGS[@]:1}
 # Compile wheels
 echo "${PYBINS[@]}"
-for PYBIN in PYBINS;do
+for PYBIN in ${PYBINS[@]};do
   PYBIN="/opt/python/${PYBIN}/bin"
   echo ${PYBIN}
   "${PYBIN}/pip" install -r /io/dev-requirements.txt
@@ -24,7 +24,7 @@ for whl in wheelhouse/*.whl; do
 done
 
 # Install packages and test
-for PYBIN in ${PYBINS}; do
+for PYBIN in ${PYBINS[@]}; do
     PYBIN="/opt/python/${PYBIN}/bin"
     "${PYBIN}/pip" install python-manylinux-demo --no-index -f /io/wheelhouse
     (cd "$HOME"; "${PYBIN}/nosetests" PyRuSH)
