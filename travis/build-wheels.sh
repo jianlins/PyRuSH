@@ -13,17 +13,17 @@ echo "${PYBINS[@]}"
 for PYBIN in ${PYBINS[@]};do
   PYBIN="/opt/python/${PYBIN}/bin"
   echo ${PYBIN}
-  "${PYBIN}/pip" install -r /io/dev-requirements.txt
+  "${PYBIN}/pip" install -r -q /io/dev-requirements.txt
   "${PYBIN}/python" -m spacy download en
   "${PYBIN}/pip" wheel /io/ -w wheelhouse/
 done
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
-    if [[ "$whl" == "PyRuSH*" ]]; then
+    if [[ $whl == PyRuSH* ]]; then
       auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
     else
-      rm "$whl"
+      rm $whl
     fi
 done
 
