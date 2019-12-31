@@ -35,7 +35,7 @@ A standalone RuSH class is available to be directly used in your code.
     >>>     print("Sentence({0}-{1}):\t>{2}<".format(sentence.begin, sentence.end, input_str[sentence.begin:sentence.end]))
     
 Spacy Componentized PyRuSH
-------------
+---------------------------
 Start from version 1.0.3, PyRuSH adds Spacy compatible Sentencizer component: PyRuSHSentencizer.
 
     >>> from PyRuSH import PyRuSHSentencizer
