@@ -6,3 +6,4 @@ dist
 *.so
 *.c
 *.cpp
+.ipynb_checkpoints
