@@ -35,7 +35,7 @@ test_script:
   # Not much of a real test yet, just try to build myself...
   #    - "%CMD_IN_ENV% conda build extruder.recipe"
   - "%PYTHON%\\python.exe setup.py build_ext -i"
-  - "%PYTHON%\\python.exe -m unittest tests/TestRush.py"
+  - "%PYTHON%\\python.exe setup.py test"
 
 after_test:
   # This step builds your wheels.

@@ -21,7 +21,7 @@ class TestRuSH(unittest.TestCase):
 
     def setUp(self):
         pwd = os.path.dirname(os.path.abspath(__file__))
-        self.rush = RuSH(str(os.path.join(pwd,'../conf/rush_rules.tsv')))
+        self.rush = RuSH(str(os.path.join(pwd,'../../conf/rush_rules.tsv')))
 
     def test1(self):
         input_str = 'Can Mr. K check it. Look\n good.\n'
