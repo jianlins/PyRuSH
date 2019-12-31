@@ -3,7 +3,7 @@
 environment:
   # Appveyor machines come with miniconda already installed.
   PYPI_LOGIN: jianlins
-  DEPLOY_TEST: true
+  DEPLOY_TEST: false
   PYPI_PWD:
     secure: m4olevjgBYrOI3NszBfruw==
 
