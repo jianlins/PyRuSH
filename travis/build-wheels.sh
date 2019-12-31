@@ -6,8 +6,8 @@ yum install -y atlas-devel
 ARGS=("$@")
 
 PLAT=${ARGS[0]}
-
-PYBINS=${ARGS[@]:1}
+PROJECT_NAME=${ARGS[1]}
+PYBINS=${ARGS[@]:2}
 # Compile wheels
 echo "${PYBINS[@]}"
 for PYBIN in ${PYBINS[@]};do
@@ -20,7 +20,7 @@ done
 
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
-    if [[ $whl == wheelhouse/PyRuSH* ]]; then
+    if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
       auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
     else
       rm $whl
@@ -31,6 +31,6 @@ ls /io/wheelhouse -l
 # Install packages and test
 for PYBIN in ${PYBINS[@]}; do
     PYBIN="/opt/python/${PYBIN}/bin"
-    "${PYBIN}/pip" install PyRuSH --no-index -f /io/wheelhouse
-    (cd "$HOME";"${PYBIN}/nosetests" PyRuSH)
+    "${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
+    (cd "$HOME";ls -l; "${PYBIN}/nosetests" ${PROJECT_NAME})
 done
