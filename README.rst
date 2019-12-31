@@ -33,5 +33,18 @@ A standalone RuSH class is available to be directly used in your code.
     >>> sentences=rush.segToSentenceSpans(input_str)
     >>> for sentence in sentences:
     >>>     print("Sentence({0}-{1}):\t>{2}<".format(sentence.begin, sentence.end, input_str[sentence.begin:sentence.end]))
+    
+Spacy Componentized PyRuSH
+------------
+Start from version 1.0.3, PyRuSH adds Spacy compatible Sentencizer component: PyRuSHSentencizer.
 
+    >>> from PyRuSH import PyRuSHSentencizer
+    >>> from spacy.lang.en import English
+    >>> nlp = English()
+    >>> nlp.add_pipe(PyRuSHSentencizer('conf/rush_rules.tsv'))))
+    >>> doc = nlp("This is a sentence. This is another sentence.")
+    >>> print('\n'.join([str(s) for s in doc.sents]))
+    
+
+    
 
