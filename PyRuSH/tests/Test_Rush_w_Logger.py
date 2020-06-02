@@ -21,7 +21,7 @@ class TestRuSH(unittest.TestCase):
 
     def setUp(self):
         pwd = os.path.dirname(os.path.abspath(__file__))
-        self.rush = RuSH(str(os.path.join(pwd, '../../conf/rush_rules.tsv')))
+        self.rush = RuSH(str(os.path.join(pwd,'../../conf/rush_rules.tsv')))
 
     def test1(self):
         input_str = 'Can Mr. K check it. Look\n good.\n'
@@ -75,10 +75,8 @@ class TestRuSH(unittest.TestCase):
         pass
 
     def test6(self):
-        input_str = '''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected Veterans.'''
+        input_str='''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected Veterans.'''
         sentences = self.rush.segToSentenceSpans(input_str)
         self.printDetails(sentences, input_str)
-
-
 if __name__ == '__main__':
     unittest.main()

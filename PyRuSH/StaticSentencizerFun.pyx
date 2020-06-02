@@ -5,7 +5,6 @@ cpdef cpredict(docs, sentencizer_fun):
     cdef int s
     cdef int t
     guesses = []
-    print(type(sentencizer_fun))
     for doc in docs:
         if len(doc)==0:
             guesses.append([])

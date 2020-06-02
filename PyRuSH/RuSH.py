@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from pathlib import Path
+
 from PyFastNER import FastCNER
 from PyFastNER import Span
 import logging
@@ -23,13 +25,17 @@ END = 'stend'
 
 
 def initLogger():
-    config_file = '../conf/logging.ini'
-    if not os.path.isfile(config_file):
-        config_file = 'conf/logging.ini'
-    if not os.path.isfile(config_file):
-        config_file = 'logging.ini'
-        with open(config_file, 'w') as f:
-            f.write('''[loggers]
+    config_files = ['../../../conf/logging.ini', '../../conf/logging.ini', '../conf/logging.ini', 'conf/logging.ini',
+                    'logging.ini']
+    config_file = None
+    for f in config_files:
+        if os.path.isfile(f):
+            config_file = f
+            break
+    if config_file is None:
+        config_file = config_files[-1]
+    with open(config_file, 'w') as f:
+        f.write('''[loggers]
 keys=root
 
 [handlers]
@@ -55,15 +61,17 @@ datefmt=
     logging.config.fileConfig(config_file)
 
 
-initLogger()
-
-
 class RuSH:
 
-    def __init__(self, rule_str: str = '', max_repeat: int = 50, auto_fix_gaps: bool = True):
+    def __init__(self, rule_str: str = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
+                 enable_logger: bool = False):
         self.fastner = FastCNER(rule_str, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
-        self.logger = logging.getLogger(__name__)
+        if enable_logger:
+            initLogger()
+            self.logger = logging.getLogger(__name__)
+        else:
+            self.logger = None
         self.auto_fix_gaps = auto_fix_gaps
         # for old RuSh rule format (doesn't have PSEUDO and ACTUAL column), make the conversion.
         if not self.fastner.full_definition:
@@ -82,7 +90,7 @@ class RuSH:
         result = self.fastner.processString(text)
 
         # log important message for debugging use
-        if self.logger.isEnabledFor(logging.DEBUG):
+        if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
             text = text.replace('\n', ' ')
             for concept_type, spans in result.items():
                 self.logger.debug(concept_type)
@@ -140,7 +148,7 @@ class RuSH:
                     output[len(output) - 1] = Span(st_begin, st_end)
                     st_started = False
 
-        if self.logger.isEnabledFor(logging.DEBUG):
+        if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
             for sentence in output:
                 self.logger.debug(
                     'Sentence({0}-{1}):\t>{2}<'.format(sentence.begin, sentence.end, text[sentence.begin:sentence.end]))
@@ -168,4 +176,3 @@ class RuSH:
             end = end + previous_end + 1
             sentences.append(Span(begin, end))
         pass
-
