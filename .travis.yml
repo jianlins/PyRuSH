@@ -86,7 +86,10 @@ script:
     fi
 
   - if [[ $TRAVIS_OS_NAME == osx ]]; then
-        pip wheel ./ -w wheelhouse/; ls wheelhouse;
+        pip wheel ./ -w wheelhouse/;
+        python setup.py sdist;
+        cp dist/$PROJECT_NAME* wheelhouse/;
+        ls wheelhouse;
         pip install wheelhouse/$PROJECT_NAME*.whl --no-index -f
         pwd; ls;
         cp -R tests "$HOME"/tests;
