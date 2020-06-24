@@ -14,7 +14,7 @@ services: docker
 env:
   jobs:
     - DOCKER_IMAGE=manylinux1_x86_64
-    - DOCKER_IMAGE=manylinux1_i686 PRE_CMD=linux32
+#     - DOCKER_IMAGE=manylinux1_i686 PRE_CMD=linux32
     - DOCKER_IMAGE=manylinux2010_x86_64
   global:
     - secure: "kQLX5rFzdAyivS/kbYj4whNPC5nAv9tbklboKcT0xVbtmaY7W95nHkMfR0g8gxx2AYLuK+tdWsDvHHGLRnuTorp+GckDq0XRD+JqAikNATfcr1bmuy1PmyLlACGtm2bUyGnDFEuMLK7zivM7mJ1c2HtXMIoxr59D0coA7u1TsvQyr0HTz0SMlI+SV+arjzbYQS6Wq1OaLaD8M4QdnKoIEEBP2pd+cRZ5tdnpYKM1jdWRSnavEeafzoVUK5/M7b+N6Gs1mgO7tUrrLMi/c8CH52H7pFSxFrK+uWhPxE5ta6rGBNxEyXaN5MOoOlF51Kitu0rz2G0YiIxizLSGBFZuXv+63PqEVBCw/aVScddIL8Ig9Un/E7yvZItbup/zQBBanLdq3kO39LWIviutv1JyGq6W9SrHM+LIJ2RNnqRbmQSOKYp3M2fF/7oU4BfZlviaisn+XhD31BymbEypMUg2iL+NcDHIKwGD+4G4hVDc3BdPPnTIufP8TiStaYVo8mtD7KAarleVT4gGdYJq52G4nLWcWmtIOB6yW/7B5bT6Xsl+mt6wxZ9our4eYsoDy7pLM5588axjZQNVWH2U5RSTKXRCKxPTAMwRNZi0/BwAuuNw2u6uppc6Ncohe0X7LBMKyp6/qU17LtDChcSAYDsyOYWEXDclEmpp7jk3VF53XSU="
@@ -22,10 +22,7 @@ env:
     - GITHUB_REPO_NAME=jianlins/PyRuSH
     - CONDA_PKG_NAME_PY=PyRuSH
     - PYPI_LOGIN=jianlins
-    - DEPLOY_TEST=true
-
-
-
+    - DEPLOY_TEST=false
 
 
 jobs:
@@ -128,6 +125,6 @@ deploy:
     script: pwd; ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
-#       tags: true
+      tags: true
       condition: "$DEPLOY_TEST == true"
 

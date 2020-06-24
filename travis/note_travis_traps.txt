@@ -1,0 +1,34 @@
+Setting yml as following won't work
+os:
+  - osx
+python:
+  - 3.6
+
+Because 'language: python' is an error on Travis CI macOS
+
+
+env:
+  global:
+    - VAR1=1
+env:
+  - VAR2=2
+
+The global won't work. env will be overwritten.
+
+
+Using travis CI linux to deploy pypi won't work, because auditwheel don't work under that os. It must be run within the
+manylinux docker containers.
+
+The following must be set to run docker in Travis CI linux
+sudo: required
+services: docker
+
+
+Using miniconda to create different version of python in Travis CI macOS is the easiest way. Other ways are either not
+working or too slow (need compile python source code).
+
+Sometime the encrypted variables will be shown to be unset. It's likely the local travis version need to be updated.
+sudo gem install travis
+And then redo the encryption.
+
+
