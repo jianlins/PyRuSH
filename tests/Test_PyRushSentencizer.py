@@ -9,7 +9,7 @@ class TestRuSH(unittest.TestCase):
 
     def setUp(self):
         pwd = os.path.dirname(os.path.abspath(__file__))
-        self.rush = PyRuSHSentencizer(str(os.path.join(pwd, '../../conf/rush_rules.tsv')))
+        self.rush = PyRuSHSentencizer(str(os.path.join(pwd, 'rush_rules.tsv')))
 
     def test_doc(self):
         nlp = English()
