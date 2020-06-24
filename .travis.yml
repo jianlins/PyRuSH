@@ -68,6 +68,7 @@ before_install:
 
 
 install:
+  - if [ -z ${PYPI_PWD+x} ]; then echo "PYPI_PWD is unset"; else echo "PYPI_PWD is set"; fi
   - echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
   - echo "DOCKER_IMAGE:$DOCKER_IMAGE";
   - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
