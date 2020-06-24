@@ -71,7 +71,7 @@ install:
   - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
   - echo "PROJECT_NAME:$PROJECT_NAME"
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  echo "dimg:$DOCKER_IMAGE;python:$TRAVIS_PYTHON_VERSION"; travis_retry docker pull quay.io/pypa/$DOCKER_IMAGE; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  conda activate test-environment; conda install --quiet --yes nomkl --file=travis/osx_dev_requirements.txt; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  conda activate test-environment; pip install -q -r travis/osx_dev_requirements.txt; fi
 
 before_script: ccache -s || true
 
