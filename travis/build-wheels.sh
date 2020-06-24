@@ -28,13 +28,16 @@ echo "PYBIN:$PYBIN"
 
 pwd
 ls wheelhouse -l
+[ ! -d "/io/wheelhouse/" ] && mkdir /io/wheelhouse/
 # Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
       if [[ $whl == wheelhouse/*linux* ]]; then
         auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/;
       else
-        cp $whl /io/wheelhouse/;
+        cp $whl /io/wheelhouse;
+        ls /io -l;
+        ls /io/wheelhouse -l;
       fi
     else
       rm $whl
@@ -42,6 +45,6 @@ for whl in wheelhouse/*.whl; do
 done
 
 ls /io/wheelhouse -l
-"${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
+"${PYBIN}/pip" install -q /io/wheelhouse/${PROJECT_NAME}*
 (cp -R /io/tests "$HOME"/tests; cd "$HOME"; ls tests; "${PYBIN}/nosetests" tests;)
 # Install packages and test

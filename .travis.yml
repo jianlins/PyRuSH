@@ -22,7 +22,7 @@ env:
     - GITHUB_REPO_NAME=jianlins/PyRuSH
     - CONDA_PKG_NAME_PY=PyRuSH
     - PYPI_LOGIN=jianlins
-    - DEPLOY_TEST=false
+    - DEPLOY_TEST=true
 
 
 jobs:
@@ -125,6 +125,6 @@ deploy:
     script: pwd; ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
-      tags: true
+#       tags: true
       condition: "$DEPLOY_TEST == true"
 
