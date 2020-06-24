@@ -1,11 +1,21 @@
 notifications:
   email: false
-
+os: linux
 language: python
 
-os:
-  - linux
+python:
+  - 3.8
+  - 3.7
+  - 3.6
+
+sudo: required
+services: docker
+
 env:
+  jobs:
+    - DOCKER_IMAGE=manylinux1_x86_64
+    - DOCKER_IMAGE=manylinux1_i686 PRE_CMD=linux32
+    - DOCKER_IMAGE=manylinux2010_x86_64
   global:
     - secure: P6c1spkY+mxyZKX+OIaUzcoJLLfZCxBEj6e/ZVThO6u4IGOoFajceQ/iXsaXLtoBhSqkbVMNs1YWqGFD8MLhBvrTY3DRQAKvavT38Z1tM5Vd91KzSgZkNRbNMswRu09STop2Eb0rl9iK81i+Hgsq3KTXtbOMrMCqJtpKOlWasvF5ZrMmwS6DXyIPW4ow671O4s2yKtkfXt3NGiX+GBlTE4ed6BJcrZ072HVR2uCg4vb1kPB5CH3Mz+r7bbVU7EY8QsUke20ZtHX1c3NErN5RSHrbLKujIeo21gdntv8nVldVX5iYMbzStqJyBJ8tmesstv3XUfMkAHnB0CRdVLm1O2fVMDnYehEWxbtGbBBpcrOG/T3U4FPKffB3Ao0uIh+k2uqPBdP4mEcqd6rEo7PdSlC/p6zNnw+JpqdQ0utHwBhIbeELCi1pytKRbHI4G+7UlJZE+Tmw/BHnPDzQs9HjZVyzDjVarfS2xpdhrogGJlCkpxz3eXWN8WbsTdUExZaiFGeZ41TgIyaGaEkrMXA3iLJRzI3VfUAueSUt1VVq8KKHLa1qKt2vn0Dx/3oXTTRz4Nl9Z5sayi68XccVbyjbvv/0SDGQAvd/7/ZhlidW9xPbJtjc6CG6UWRTRkm6bSJQhQ1lq1VsYmPtzCqXqIVNXKINS/j3CvvKla0PejQp9U4=
     - secure: 22S/8zpvjldEjolbeMBLnq/0iXBKMVjFVqVYVEzZbBgdvnbhTWwa9B9mLVHhOwnl8RNFB2P0qTI+5pz8SqL9tf4G+hw/h0bG7OW8cSnMwyp07yNbZrn/9cxzrWhlQn3mLxeOFiNDM1eZ5BmTFJca3roF4KrZ3OVq59ibmCAhe8KY+TqOuf5600nGmDHtVtEQxApyIUUm9VQAKrj1Y0ihJGLF5RLSXODKXTGn2nEfRxrDDf2JYgZWrQ9cCkRC/NpNGpaaXyPC8SXp1UtPAKsDrfVjnh5iejMRLxWTy7oFkrM3DP8wCBCGeiVTyF02mOR0U5ykzd8ydkBeWgSQx1fCXKHXXyzzkqgLvYcnpfPY3UEXqjEO1OnWDsA8rbzgyvQzvuWDP35Yt221t6bo7uqcySMZl1QA+XEnXFVgAroY//7Owy5PNlX5HCWIl0xRBktBNfsZIy/Ff56eqglqL8nE5V4cqISqF5FYQwsO+kQWBFynQit2uUvphEc6ptJPng6qeOtDEd8roo5YcapfuVzphNzwQh713B8cfnAwFrgkfgOo52Ok1Qtn2/4t/97XghFe1Ui9oXgdQ++VZ4KiJgA/dlmXSTyWUI2+nTxSOjNVlv0VZodza85wF7dDFbLLYtziCqx+g+LQdaJFB3ww/ro/W9yLM9ze89xlxDfdR92Rz0M=
@@ -14,77 +24,107 @@ env:
     - GITHUB_REPO_NAME=jianlins/PyRuSH
     - CONDA_PKG_NAME_PY=PyRuSH
     - PYPI_LOGIN=jianlins
-    - PY35="cp35-cp35m"
-    - PY36="cp36-cp36m"
-    - PY37="cp37-cp37m"
-    - PY38="cp38-cp38"
-    - TRAVIS_PY36=3.6.7
-    - TRAVIS_PY37=3.7
-    - DEPLOY_TEST=false
-    - secure: "u0hx0AHNydcoS2dWcWv9qR6nH8zzzlYIyy5RUnCw2L5YC9xE+6R4p456XRvOZ2qfwY4wPrKmEbmp9n9VJlLA95RywdediGcbTVS1dX8rVLJaTJRiY/Ougj5XwpGF5U98/0K7PP3tZ0Gt2ykEjrnhNdOGNJQcf22sO28/9CIwmeU6FU5/ooCTXPUYwu+bW/oT00sg4a8bLOfR/wdp0oKymFpB1KXna5jPh09sTWvymAMBL2J0AF3EshImOVwJswZD9a3mpaypgsR/qH9oZPY4JrUgeyZGg6D2dK32RW48WNgJFETIfZn2xBq3PB5csnP5tNR4BYKa292HfMoRnBbEyqQJkQbRl/cjXoX93FcTwzqLiOZYYxnvsabHkbhxIJ2Vd3pX4MsJ7+YSFSW+yk5xQB6l77YL/Cy6/tKehkAzUrHzwyHL1kFUIAuZhYF+ayAB+w6Jvxx+72/QKnKFehELcprR37ew5u6DmM39ikGBIuurYxqODmMDrW45+fUm9wnZ2MgExBuzYi2MchkC08djru5WIzPHjmdEFM1qMyE6bs8kcO+RhXBjsJR/z0pwjLtfn+9bMoKkW6Kq5gylJM/643/uY6S3+DLZg1srl8fNlREdtZ/CkxpVtro7hb+Msu3q2NMAdGFy+g3QmyahWEUgtamZGvtKc5LXkG0NCc+dqCc="
+    - DEPLOY_TEST=true
+    - secure: "N5VeOo+j9P8PEC2Qh/nBYniccWvrrzRw/AhR131c8qK4C6ZgUKGNa8zIfSp6syi0mQ16Z7rf57bsaPrcl6CXbRzUYaNs71xJexvqZHxs1FZXWqNDOdrM1VCuSE8msxzYhz8Gbt37KCJ1DIwFnZHH0860fTmLTmbjGSg/IK2AKH9Dewm81TkEzM6Yzu5saKasbfoR3wY0xsykubNFRJxEB4rseuZhjSfySfYHjiskjXFEfBIYHL6TjdnZcDdtuPnDuk9S0koB/enlGMqMhsKTe1ApZGvZcuYhmPhRydWxU2bjvwkkRcQEdTwOtiUBvi3D8i1FzNJoOWRWhDI5oAz81/bUAMYJSrZ1NpZ4JOOsD/HNfSO9r0DBJdEZAlKJ8uAJYa5IwJMAylSly+DL31k4VcG1unvHDDXMFG52rCLGzdtf/b7oVVh05lZxcvVFio31bfvjjZY8ugLOOywnwRyVgqWGNvJIld1PUGIjyyXKKxpFh7J8jOF8KsxfxU6l1dGEWRMnjTEPYdF1P1t+lOv8rFxRPYR1WIpZte7sGu2NSrJHGynWtx2uJOqMYFVAF3ZqXYtQ3QqbQTZAOZlzKCBXh+y4+lze8DKeGKc7TOtwC00R2E4A+KdxWG1OgePwrlxDUPz4pWYvS+4LLuxrkHgpMmY1fBLpAaXLQeSX1e+vcfg="
 
 
-matrix:
+
+jobs:
   include:
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-        PLAT=manylinux1_x86_64
-    #      unfortunately spacy doesn't support this os, although PyRush can run without Spacy, just to avoid compiling complexity, skip this os for now.
-    #    - sudo: required
-    #      services:
-    #        - docker
-    #      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
-    #        PRE_CMD=linux32
-    #        PLAT=manylinux1_i686
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
-        PLAT=manylinux2010_x86_64
+     - name: "Python 3.6 on macOS"
+       os: osx
+       osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
+       language: shell       # 'language: python' is an error on Travis CI macOS
+       env: TRAVIS_PYTHON_VERSION=3.6
+     - name: "Python 3.7 on macOS"
+       os: osx
+       osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
+       language: shell       # 'language: python' is an error on Travis CI macOS
+       env: TRAVIS_PYTHON_VERSION=3.7
+     - name: "Python 3.8 on macOS"
+       os: osx
+       osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
+       language: shell       # 'language: python' is an error on Travis CI macOS
+       env: TRAVIS_PYTHON_VERSION=3.8
+
+before_install:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      echo "Installing Miniconda";
+      CONDA_PLATFORM=MacOSX;
+      travis_retry wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-${CONDA_PLATFORM}-x86_64.sh;
+      bash miniconda.sh -b -p $HOME/miniconda;
+      source "$HOME/miniconda/etc/profile.d/conda.sh";
+      hash -r;
+      conda config --set always_yes yes --set changeps1 no;
+      conda update -q conda;
+      conda --version;
+      conda info -a;
+      conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip;
+    fi
+
+
 
 install:
-  - /opt/python/${TRAVIS_PY36}/bin/pip install -q twine
-  - /opt/python/${TRAVIS_PY36}/bin/pip install -q -r dev-requirements.txt
-  - docker pull $DOCKER_IMAGE
+  - echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
+  - echo "DOCKER_IMAGE:$DOCKER_IMAGE";
+  - echo "$TRAVIS_OS_NAME:$TRAVIS_OS_NAME";
+  - echo "PROJECT_NAME:$PROJECT_NAME"
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then  echo "dimg:$DOCKER_IMAGE;python:$TRAVIS_PYTHON_VERSION"; travis_retry docker pull quay.io/pypa/$DOCKER_IMAGE; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then  conda activate test-environment; conda install --quiet --yes nomkl --file=travis/osx_dev_requirements.txt; fi
+
+before_script: ccache -s || true
 
 script:
-  - chmod 775 travis/build-wheels.sh
-  - cat travis/build-wheels.sh
-  - docker run --name "aaa36" -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh ${PLAT} ${PROJECT_NAME} ${PY36} ${PY37} ${PY38}"
-  - ls wheelhouse/
-  - echo "password length ${#PYPI_PWD}"
+  - if [[ $TRAVIS_OS_NAME == linux ]]; then
+        chmod 775 travis/build-wheels.sh;
+        echo "TRAVIS_PYTHON_VERSION:$TRAVIS_PYTHON_VERSION";
+        docker run --name "dk_$PLAT_$TRAVIS_PYTHON_VERSION" -v `pwd`:/io quay.io/pypa/$DOCKER_IMAGE $PRE_CMD /bin/sh -c "/io/travis/build-wheels.sh $DOCKER_IMAGE $PROJECT_NAME $TRAVIS_PYTHON_VERSION";
+        pwd;
+        echo "Inside wheelhouse"
+        ls wheelhouse;
+    fi
 
+  - if [[ $TRAVIS_OS_NAME == osx ]]; then
+        pip wheel ./ -w wheelhouse/; ls wheelhouse;
+        pip install wheelhouse/$PROJECT_NAME*.whl --no-index -f
+        pwd; ls;
+        cp -R tests "$HOME"/tests;
+        cd "$HOME";
+        pwd ;
+        nosetests tests;
+        cd build/$GITHUB_REPO_NAME ;
+        ls wheelhouse;
+        for whl in wheelhouse/*.whl; do
+            echo $whl;
+            if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
+                echo 'match..';
+            else
+                rm $whl;
+            fi
+        done;
+        echo "after clean wheelhouse";
+        ls wheelhouse;
+    fi
 
+before_deploy: pip install twine
 
 deploy:
   # deploy develop to pypi.org
   - provider: script
-    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*${PLAT}*
+    skip_cleanup: true
+    script: pwd;ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
-      condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
-
-  - provider: script
-    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} dist/${PROJECT_NAME}*tar.gz
-    on:
-      repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == false"
+      condition: "$DEPLOY_TEST == false"
 
   # deploy develop to test.pypi.org
   - provider: script
-    script: /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*${PLAT}*
+    skip_cleanup: true
+    script: pwd;ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
       tags: true
-      condition: "$TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"
+      condition: "$DEPLOY_TEST == true"
 
-  - provider: script
-    script: /opt/python/${TRAVIS_PY36}/bin/python setup.py sdist && /opt/python/${TRAVIS_PY36}/bin/python -m twine upload -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ dist/${PROJECT_NAME}*tar.gz
-    on:
-      repo: ${GITHUB_REPO_NAME}
-      tags: true
-      condition: "$PLAT == manylinux1_x86_64 && $TRAVIS_OS_NAME == linux && $DEPLOY_TEST == true"

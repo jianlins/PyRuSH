@@ -7,30 +7,41 @@ ARGS=("$@")
 
 PLAT=${ARGS[0]}
 PROJECT_NAME=${ARGS[1]}
-PYBINS=${ARGS[@]:2}
-# Compile wheels
-echo "${PYBINS[@]}"
-for PYBIN in ${PYBINS[@]};do
-  PYBIN="/opt/python/${PYBIN}/bin"
-  echo "${PYBIN}"
-  "${PYBIN}/pip" install -q -r /io/dev-requirements.txt
-  "${PYBIN}/python" -m spacy download en
-  "${PYBIN}/pip" wheel /io/ -w wheelhouse/
-done
+PYBIN=${ARGS[2]}
+if [ $PYBIN ==  3.5 ]; then
+  PYBIN='cp35-cp35m'
+elif [ $PYBIN ==  3.8 ]; then
+  PYBIN='cp38-cp38'
+elif [ $PYBIN ==  3.7 ]; then
+  PYBIN='cp37-cp37m'
+#  sudo apt-get install libssl-dev
+else
+  PYBIN='cp36-cp36m'
+fi
 
+# Compile wheels
+which python
+PYBIN="/opt/python/${PYBIN}/bin"
+echo "PYBIN:$PYBIN"
+cd /io
+"${PYBIN}/pip" install -q -r dev-requirements.txt
+"${PYBIN}/pip" wheel ./ -w wheelhouse/
+
+pwd
 # Bundle external shared libraries into the wheels
+
+ls wheelhouse -l
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
-      auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+      if [[ $whl == wheelhouse/*linux* ]]; then
+        auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+      fi
     else
       rm $whl
     fi
 done
 
 ls /io/wheelhouse -l
+"${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
+(cp -R /io/tests "$HOME"/tests; cd "$HOME"; ls tests; "${PYBIN}/nosetests" tests;)
 # Install packages and test
-for PYBIN in ${PYBINS[@]}; do
-    PYBIN="/opt/python/${PYBIN}/bin"
-    "${PYBIN}/pip" install ${PROJECT_NAME} --no-index -f /io/wheelhouse
-    (cd "$HOME";ls -l; "${PYBIN}/nosetests" ${PROJECT_NAME})
-done
