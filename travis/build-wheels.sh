@@ -23,18 +23,18 @@ fi
 which python
 PYBIN="/opt/python/${PYBIN}/bin"
 echo "PYBIN:$PYBIN"
-cd /io
-"${PYBIN}/pip" install -q -r dev-requirements.txt
-"${PYBIN}/pip" wheel ./ -w wheelhouse/
+"${PYBIN}/pip" install -q -r /io/dev-requirements.txt
+"${PYBIN}/pip" wheel /io/ -w wheelhouse/
 
 pwd
-# Bundle external shared libraries into the wheels
-
 ls wheelhouse -l
+# Bundle external shared libraries into the wheels
 for whl in wheelhouse/*.whl; do
     if [[ $whl == wheelhouse/${PROJECT_NAME}* ]]; then
       if [[ $whl == wheelhouse/*linux* ]]; then
-        auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/
+        auditwheel repair "$whl" --plat $PLAT -w /io/wheelhouse/;
+      else
+        cp $whl /io/wheelhouse/;
       fi
     else
       rm $whl
