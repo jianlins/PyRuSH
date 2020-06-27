@@ -125,6 +125,6 @@ deploy:
     script: pwd; ls; ls wheelhouse; python -m twine upload --skip-existing -u ${PYPI_LOGIN} -p ${PYPI_PWD} --repository-url https://test.pypi.org/legacy/ wheelhouse/${PROJECT_NAME}*;
     on:
       repo: ${GITHUB_REPO_NAME}
-#       tags: true
+      tags: true
       condition: "$DEPLOY_TEST == true"
 

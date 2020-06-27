@@ -71,12 +71,26 @@ class TestRuSH(unittest.TestCase):
             sentence = sentences[i]
             print('assert (sentences[' + str(i) + '].begin == ' + str(sentence.begin) +
                   ' and sentences[' + str(i) + '].end == ' + str(sentence.end) + ')')
+        for i in range(0, len(sentences)):
+            sentence = sentences[i]
+            print(input_str[sentence.begin:sentence.end])
         # self.printDetails(sentences, input_str)
         pass
 
     def test6(self):
         input_str = '''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected Veterans.'''
         sentences = self.rush.segToSentenceSpans(input_str)
+        self.printDetails(sentences, input_str)
+
+    def test7(self):
+        input_str = '''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected Veterans.'''
+        rules = []
+        rules.append(r'\b(\a	0	stbegin')
+        rules.append(r'\a\e	2	stend')
+        rules.append(r'. +(This	0	stbegin')
+        rules.append(r'](.	2	stend')
+        rush = RuSH(rules, enable_logger=True)
+        sentences = rush.segToSentenceSpans(input_str)
         self.printDetails(sentences, input_str)
 
 
