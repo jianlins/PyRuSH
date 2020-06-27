@@ -22,7 +22,7 @@ env:
     - GITHUB_REPO_NAME=jianlins/PyRuSH
     - CONDA_PKG_NAME_PY=PyRuSH
     - PYPI_LOGIN=jianlins
-    - DEPLOY_TEST=true
+    - DEPLOY_TEST=false
 
 
 jobs:
