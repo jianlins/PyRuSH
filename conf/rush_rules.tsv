@@ -18,9 +18,9 @@
 @maxRepeatLength:100
 
 #stbegin is the marker for sentence begin, the span of sentence will start at the begin of the captured group
-#stbegin has two scores 0, 1: 0 for true sentence begin, 1 for false sentence begin which will overwrite 0 when they are overlapping
+#stbegin has two scores 0, 1: 0 for true sentence begin clues, 1 for false sentence begin clues which will overwrite 0-scored rules when they are overlapping.
 #stend is the marker for sentence begin, the span of sentence will end at the end of the captured group
-#stend has two scores 2, 3: 2 for true sentence end, 3 for false sentence end which will overwrite 2 when they are overlapping
+#stend also has two scores 2, 3: 2 for true sentence end clues, 3 for false sentence end clues which will overwrite 2-scored rules when they are overlapping
 
 # \b the begin of an input
 # \e the end of an input

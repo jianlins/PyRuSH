@@ -47,4 +47,6 @@ Start from version 1.0.3, PyRuSH adds Spacy compatible Sentencizer component: Py
     
 
     
-
+A Colab Notebook Demo
+---------------------------
+Feel free to try this runnable `Colab notebook Demo <https://colab.research.google.com/drive/1gX9MzZTQiPw8G3x_vUwZbiSXGtbI0uIX?usp=sharing>`_
