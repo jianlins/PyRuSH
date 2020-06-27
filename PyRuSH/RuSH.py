@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from pathlib import Path
+from typing import Union, List
 
 from PyFastNER import FastCNER
 from PyFastNER import Span
@@ -34,8 +35,9 @@ def initLogger():
             break
     if config_file is None:
         config_file = config_files[-1]
-    with open(config_file, 'w') as f:
-        f.write('''[loggers]
+        print(config_file)
+        with open(config_file, 'w') as f:
+            f.write('''[loggers]
 keys=root
 
 [handlers]
@@ -63,12 +65,12 @@ datefmt=
 
 class RuSH:
 
-    def __init__(self, rule_str: str = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
+    def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
                  enable_logger: bool = False):
-        self.fastner = FastCNER(rule_str, max_repeat)
+        self.fastner = FastCNER(rules, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
         if enable_logger:
-            initLogger()
+            # initLogger()
             self.logger = logging.getLogger(__name__)
         else:
             self.logger = None

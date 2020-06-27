@@ -17,7 +17,7 @@ class PyRuSHSentencizer(Sentencizer):
         """
         self.rules_path = rules_path
         self.token_compatible = token_compatible
-        self.rush = RuSH(rule_str=rules_path, max_repeat=max_repeat, auto_fix_gaps=auto_fix_gaps)
+        self.rush = RuSH(rules=rules_path, max_repeat=max_repeat, auto_fix_gaps=auto_fix_gaps)
 
     @classmethod
     def from_nlp(cls, nlp, **cfg):
