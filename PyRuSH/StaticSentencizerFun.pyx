@@ -42,6 +42,10 @@ cpdef cset_annotations(docs, batch_tag_ids, tensors=None):
             else:
                 doc[j].sent_start = False
 
+# The function 'char_span' will try to match the tokens in the backend, as it might be less efficient when match
+# sentences where it does not assume the sentences are sorted. Also, it will return None if not find a match rather
+# than looking around. Thus, abandon this method.
+
 # cpdef csegment(doc, sentencizer_fun):
 #     for token in doc:
 #         token.is_sent_start = False

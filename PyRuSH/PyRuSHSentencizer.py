@@ -3,7 +3,7 @@ from spacy.tokens.doc import Doc
 
 from PyRuSH import RuSH
 
-from .StaticSentencizerFun import cpredict, cset_annotations, csegment
+from .StaticSentencizerFun import cpredict, cset_annotations
 
 
 class PyRuSHSentencizer(Sentencizer):
