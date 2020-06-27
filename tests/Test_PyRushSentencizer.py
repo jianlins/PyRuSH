@@ -20,7 +20,7 @@ class TestRuSH(unittest.TestCase):
         print('\ndoc is an instance of {}'.format(type(doc)))
 
     def test_doc2(self):
-        input_str='''        
+        input_str = '''        
 
         
         Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with chest pain and respiratory insufficiency.  She has chronic lung disease with bronchospastic angina.
@@ -54,8 +54,10 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
         nlp = English()
         nlp.add_pipe(self.rush)
         doc = nlp(input_str)
-        sents=[s for s in doc.sents]
+        sents = [s for s in doc.sents]
         for sent in sents:
-            print('>'+str(sent)+'<')
-
-
+            print('>' + str(sent) + '<\n\n')
+        assert (len(sents) == 26)
+        # SpaCy has no control of sentence end. Thus, it ends up with sloppy ends.
+        assert (sents[1].text=='Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with'
+                               ' chest pain and respiratory insufficiency.  ')
