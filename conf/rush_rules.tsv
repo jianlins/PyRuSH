@@ -22,22 +22,25 @@
 #stend is the marker for sentence begin, the span of sentence will end at the end of the captured group
 #stend has two scores 2, 3: 2 for true sentence end, 3 for false sentence end which will overwrite 2 when they are overlapping
 
-# \d   A digit
-# \C   A capital letter
-# \c   A lowercase letter
-# \s   A whitespace
-# \a   A Non-whitespace character
-# \u   A unusual character: not a letter, not a number, not a punctuation, not a whitespace
-# \n   A return
-# (   Beginning of capturing a group
-# )   End of capturing a group
-# \p   A punctuation
-# <p>
-# \+   An addition symbol (to distinguish the "+" after a wildcard)
-# \(   A left parentheses symbol
-# \)   A right parentheses symbol
-# <p>
-# The wildcard plus "+": 1 or more wildcard
+# \b the begin of an input
+# \e the end of an input
+# \d A digit
+# \C A capital letter
+# \c A lowercase letter
+# \s A character of whitespace or tab or Unicode code point 160
+# \w A character of \s above or Unicode code greater than '~'
+# \a A Non-whitespace character
+# \u A unusual character: Unicode code greater than '~' (excluding Unicode 160)
+# \n A return ('\n' or '\r')
+# ( Beginning of capturing a group
+# ) End of capturing a group
+# \p A punctuation
+#
+# \+ An addition symbol (to distinguish the "+" after a wildcard)
+# \( A left parentheses symbol
+# \) A right parentheses symbol
+#
+#  A wildcard followed by a "+": 1 or more characters that match the wildcard
 
 \b(\a	0	stbegin
 \b(\d	0	stbegin
@@ -207,8 +210,8 @@
 #\n(\(+\)\s+\C	0	stbegin
 \n        (\d	0	stbegin
 \C:\n+(\d	0	stbegin
-\n(\d.\s+)\C	0	stbegin
-\n(\d.\C	0	stbegin
+\n(\d+).\s+\C	0	stbegin
+\n(\d+.\C	0	stbegin
 \n\s+(\d.\s+\C	0	stbegin
 \n\s+(\d\d.\s+\C	0	stbegin
 \n\d.\)\s+(\C	0	stbegin
@@ -302,18 +305,6 @@ from \d+ to \d+	3	stend
 \n(\(\d\)\s+\C	0	stbegin
 \n("\C	0	stbegin
 
-\a.\s+(This 	0	stbegin
-\a.\s+(That 	0	stbegin
-\a.\s+(The 	0	stbegin
-\a.\s+(She 	0	stbegin
-\a.\s+(He 	0	stbegin
-\a.\s+(Her 	0	stbegin
-\a.\s+(His 	0	stbegin
-\a.\s+(They 	0	stbegin
-\a.\s+(Their 	0	stbegin
-\a.\s+(But 	0	stbegin
-\a.\s+(Now 	0	stbegin
-\a.\s+(Discharge 	0	stbegin
 
 
 (\a)\s+\n+-	2	stend
@@ -960,5 +951,20 @@ HOSPITAL\w+.\w+(\C	0	stbegin
 .\w+(Their 	0	stbegin
 .\w+(I 	0	stbegin
 .\w+(My 	0	stbegin
-
-
+.\w+(But 	0	stbegin
+.\w+(Now 	0	stbegin
+.\w+(Discharge 	0	stbegin
+.\w+(This 	0	stbegin
+.\w+(That 	0	stbegin
+.\w+(this 	0	stbegin
+.\w+(that 	0	stbegin
+.\w+(he 	0	stbegin
+.\w+(she 	0	stbegin
+.\w+(we 	0	stbegin
+.\w+(our 	0	stbegin
+.\w+(his 	0	stbegin
+.\w+(her 	0	stbegin
+.\w+(they 	0	stbegin
+.\w+(their 	0	stbegin
+.\w+(my 	0	stbegin
+.\w+(but 	0	stbegin

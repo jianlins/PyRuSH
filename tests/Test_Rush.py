@@ -20,8 +20,8 @@ from PyRuSH import RuSH
 class TestRuSH(unittest.TestCase):
 
     def setUp(self):
-        pwd = os.path.dirname(os.path.abspath(__file__))
-        self.rush = RuSH(str(os.path.join(pwd, 'rush_rules.tsv')), enable_logger=True)
+        self.pwd = os.path.dirname(os.path.abspath(__file__))
+        self.rush = RuSH(str(os.path.join(self.pwd, 'rush_rules.tsv')), enable_logger=True)
 
     def test1(self):
         input_str = 'Can Mr. K check it. Look\n good.\n'
@@ -92,6 +92,20 @@ class TestRuSH(unittest.TestCase):
         rush = RuSH(rules, enable_logger=True)
         sentences = rush.segToSentenceSpans(input_str)
         self.printDetails(sentences, input_str)
+
+    def test_doc2(self):
+        input_str = '''  
+9.  Advair b.i.d.
+10.  Xopenex q.i.d. and p.r.n.
+I will see her in a month to six weeks.  She is to follow up with Dr. X before that.
+'''
+        self.rush = RuSH(str(os.path.join(self.pwd, 'rush_rules.tsv')), min_sent_chars=2, enable_logger=True)
+        sentences = self.rush.segToSentenceSpans(input_str)
+        for sent in sentences:
+            print('>' + input_str[sent.begin:sent.end] + '<\n')
+        assert (len(sentences) == 4)
+        sent = sentences[1]
+        assert (input_str[sent.begin:sent.end] == '10.  Xopenex q.i.d. and p.r.n.')
 
 
 if __name__ == '__main__':

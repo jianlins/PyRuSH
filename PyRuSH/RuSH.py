@@ -35,7 +35,6 @@ def initLogger():
             break
     if config_file is None:
         config_file = config_files[-1]
-        print(config_file)
         with open(config_file, 'w') as f:
             f.write('''[loggers]
 keys=root
@@ -66,11 +65,12 @@ datefmt=
 class RuSH:
 
     def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
+                 min_sent_chars: int = 5,
                  enable_logger: bool = False):
         self.fastner = FastCNER(rules, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
         if enable_logger:
-            # initLogger()
+            initLogger()
             self.logger = logging.getLogger(__name__)
         else:
             self.logger = None
@@ -78,6 +78,7 @@ class RuSH:
         # for old RuSh rule format (doesn't have PSEUDO and ACTUAL column), make the conversion.
         if not self.fastner.full_definition:
             self.backCompatableParseRule()
+        self.min_sent_chars = min_sent_chars
         pass
 
     def backCompatableParseRule(self):
@@ -120,6 +121,7 @@ class RuSH:
         j = 0
 
         for i in range(0, len(begins)):
+            token = begins[i]
             if not st_started:
                 st_begin = begins[i].begin
                 if st_begin < st_end:
@@ -129,7 +131,7 @@ class RuSH:
                 continue
 
             if self.auto_fix_gaps and len(output) > 0 and st_begin > output[-1].end:
-                self.fix_gap(output, text, output[-1].end, st_begin)
+                self.fix_gap(output, text, output[-1].end, st_begin, self.min_sent_chars)
 
             for k in range(j, len(ends)):
                 if i < len(begins) - 1 and k < len(ends) - 1 and begins[i + 1].begin < ends[k].begin + 1:
@@ -158,7 +160,7 @@ class RuSH:
         return output
 
     @staticmethod
-    def fix_gap(sentences: [], text: str, previous_end: int, this_begin: int):
+    def fix_gap(sentences: [], text: str, previous_end: int, this_begin: int, min_sent_chars: int = 5):
         counter = 0
         begin = 0
         end = 0
@@ -173,7 +175,7 @@ class RuSH:
             elif this_char in string.punctuation:
                 end = i
         # An arbitrary number to decide whether the gap is likely to be a sentence or not
-        if counter > 5:
+        if counter >= min_sent_chars:
             begin += previous_end
             end = end + previous_end + 1
             sentences.append(Span(begin, end))
