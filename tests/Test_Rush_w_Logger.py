@@ -11,8 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import unittest
 import os
+import unittest
 
 from PyRuSH import RuSH
 
@@ -26,6 +26,7 @@ class TestRuSH(unittest.TestCase):
     def test1(self):
         input_str = 'Can Mr. K check it. Look\n good.\n'
         sentences = self.rush.segToSentenceSpans(input_str)
+        self.printDetails(sentences, input_str)
         assert (sentences[0].begin == 0 and sentences[0].end == 19)
         assert (sentences[1].begin == 20 and sentences[1].end == 31)
 
@@ -56,30 +57,33 @@ class TestRuSH(unittest.TestCase):
     def test4(self):
         input_str = 'Delirium - '
         sentences = self.rush.segToSentenceSpans(input_str)
-        assert (sentences[0].begin == 0 and sentences[0].end == 10)
+        assert (sentences[0].begin == 0 and sentences[0].end == 8)
         pass
 
     def test5(self):
         input_str = "The patient complained about the TIA \n\n No memory issues. \"I \n\nOrdered the MRI scan.- "
         sentences = self.rush.segToSentenceSpans(input_str)
         assert (sentences[0].begin == 0 and sentences[0].end == 36)
-        assert (sentences[1].begin == 39 and sentences[1].end == 85)
+        assert (sentences[1].begin == 39 and sentences[1].end == 57)
+        assert (sentences[2].begin == 58 and sentences[2].end == 84)
         pass
 
     def printDetails(self, sentences, input_str):
         for i in range(0, len(sentences)):
             sentence = sentences[i]
-            print('assert (sentences[' + str(i) + '].begin == ' + str(sentence.begin) +
-                  ' and sentences[' + str(i) + '].end == ' + str(sentence.end) + ')')
+            print('assert (sentences[' + str(i) + '].begin == ' + str(sentence.begin) + ' and sentences[' + str(
+                i) + '].end == ' + str(sentence.end) + ')')
         # self.printDetails(sentences, input_str)
+        print('\n\n'.join(['>{}<'.format(input_str[s.begin:s.end]) for s in sentences]))
         pass
 
     def test6(self):
-        input_str = '''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected Veterans.'''
+        input_str = '''The Veterans Aging Cohort Study (VACS) is a large, longitudinal, observational study of a cohort of HIV 
+        infected and matched uninfected Veterans receiving care within the VA [2]. This cohort was designed to examine 
+        important health outcomes, including cardiovascular diseases like heart failure, among HIV infected and uninfected 
+        Veterans.'''
         sentences = self.rush.segToSentenceSpans(input_str)
         self.printDetails(sentences, input_str)
-
-
 
 
 if __name__ == '__main__':

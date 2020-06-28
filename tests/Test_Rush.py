@@ -56,14 +56,17 @@ class TestRuSH(unittest.TestCase):
     def test4(self):
         input_str = 'Delirium - '
         sentences = self.rush.segToSentenceSpans(input_str)
-        assert (sentences[0].begin == 0 and sentences[0].end == 10)
+        self.printDetails(sentences, input_str)
+        assert (sentences[0].begin == 0 and sentences[0].end == 8)
         pass
 
     def test5(self):
         input_str = "The patient complained about the TIA \n\n No memory issues. \"I \n\nOrdered the MRI scan.- "
         sentences = self.rush.segToSentenceSpans(input_str)
+        self.printDetails(sentences, input_str)
         assert (sentences[0].begin == 0 and sentences[0].end == 36)
-        assert (sentences[1].begin == 39 and sentences[1].end == 85)
+        assert (sentences[1].begin == 39 and sentences[1].end == 57)
+        assert (sentences[2].begin == 58 and sentences[2].end == 84)
         pass
 
     def printDetails(self, sentences, input_str):

@@ -1,4 +1,20 @@
-# Copyright  2018  Department of Biomedical Informatics, University of Utah
+# ******************************************************************************
+#  MIT License
+#
+#  Copyright (c) 2020 Jianlin Shi
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+#  files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
+#  modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+#  Software is furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+#  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+#  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+#  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# ******************************************************************************
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,15 +27,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from pathlib import Path
+import logging
+import logging.config
+import os.path
 from typing import Union, List
 
 from PyFastNER import FastCNER
 from PyFastNER import Span
-import logging
-import logging.config
-import os.path
-import string
 
 BEGIN = 'stbegin'
 END = 'stend'
@@ -64,14 +78,14 @@ datefmt=
 
 class RuSH:
 
-    def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
-                 min_sent_chars: int = 5,
+    def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True, min_sent_chars: int = 5,
                  enable_logger: bool = False):
         self.fastner = FastCNER(rules, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
         if enable_logger:
             initLogger()
             self.logger = logging.getLogger(__name__)
+            print(self.logger.level)
         else:
             self.logger = None
         self.auto_fix_gaps = auto_fix_gaps
@@ -90,7 +104,8 @@ class RuSH:
 
     def segToSentenceSpans(self, text):
         output = []
-        result = self.fastner.processString(text)
+        result = {BEGIN: [], END: []}
+        self.fastner.process(text, 0, result)
 
         # log important message for debugging use
         if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
@@ -99,21 +114,14 @@ class RuSH:
                 self.logger.debug(concept_type)
                 for span in spans:
                     rule = self.fastner.rule_store[span.rule_id]
-                    self.logger.debug('\t{0}-{1}:{2}\t{3}<{4}>\t[Rule {5}:\t{6}\t{7}\t{8}\t{9}]'.format(
-                        span.begin, span.end, span.score, text[:span.begin],
-                        text[span.begin:span.begin + 1],
-                        rule.id, rule.rule, rule.rule_name,
-                        rule.score, rule.type
-                    ))
-
+                    self.logger.debug(
+                        '\t{0}-{1}:{2}\t{3}<{4}>\t[Rule {5}:\t{6}\t{7}\t{8}\t{9}]'.format(span.begin, span.end, span.score,
+                                                                                          text[:span.begin],
+                                                                                          text[span.begin:span.begin + 1],
+                                                                                          rule.id, rule.rule, rule.rule_name,
+                                                                                          rule.score, rule.type))
         begins = result[BEGIN]
         ends = result[END]
-
-        if begins is None or len(begins) == 0:
-            begins = [Span(0, 1)]
-
-        if ends is None or len(ends) == 0:
-            ends = [Span(len(text) - 1, len(text))]
 
         st_begin = 0
         st_started = False
@@ -123,11 +131,11 @@ class RuSH:
         for i in range(0, len(begins)):
             token = begins[i]
             if not st_started:
-                st_begin = begins[i].begin
+                st_begin = token.begin
                 if st_begin < st_end:
                     continue
                 st_started = True
-            elif begins[i].begin < st_end:
+            elif token.begin < st_end:
                 continue
 
             if self.auto_fix_gaps and len(output) > 0 and st_begin > output[-1].end:
@@ -151,6 +159,25 @@ class RuSH:
                 else:
                     output[len(output) - 1] = Span(st_begin, st_end)
                     st_started = False
+        # fix beginning and ending gaps, in case the existing rules will miss some cases
+        if self.auto_fix_gaps:
+            if len(output) > 0:
+                begin_trimed_gap = RuSH.trim_gap(text, 0, output[0].begin)
+                if begin_trimed_gap is not None:
+                    if output[0].begin <= ends[0].begin:
+                        output[0].begin = begin_trimed_gap.begin
+                    else:
+                        output.insert(0, begin_trimed_gap)
+                end_trimed_gap = RuSH.trim_gap(text, output[-1].end, len(text))
+                if end_trimed_gap is not None:
+                    if end_trimed_gap.width > self.min_sent_chars:
+                        output.append(end_trimed_gap)
+                    else:
+                        output[-1].end = end_trimed_gap.end
+            else:
+                trimed_gap = RuSH.trim_gap(text, 0, len(text))
+                if trimed_gap is not None and trimed_gap.width > self.min_sent_chars:
+                    output.append(trimed_gap)
 
         if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
             for sentence in output:
@@ -161,22 +188,33 @@ class RuSH:
 
     @staticmethod
     def fix_gap(sentences: [], text: str, previous_end: int, this_begin: int, min_sent_chars: int = 5):
-        counter = 0
-        begin = 0
+        trimed_gap = RuSH.trim_gap(text, previous_end, this_begin)
+        if trimed_gap is None:
+            return
+        if trimed_gap.width > min_sent_chars:
+            sentences.append(trimed_gap)
+        elif len(sentences) > 0:
+            sentences[-1].end = trimed_gap.end
+
+    @staticmethod
+    def trim_gap(text: str, previous_end: int, this_begin: int) -> Span:
+        begin = -1
+        alnum_begin = -1
         end = 0
-        gap_chars = text[previous_end:this_begin]
+        gap_chars = list(text[previous_end:this_begin])
+        # trim left
         for i in range(0, this_begin - previous_end):
             this_char = gap_chars[i]
-            if this_char.isalnum():
+            if not this_char.isspace():
+                begin = i
+                break
+        for i in range(this_begin - previous_end - 1, begin, -1):
+            this_char = gap_chars[i]
+            if this_char.isalnum() or this_char == '.' or this_char == '!' or this_char == '?' or this_char == ')' or this_char\
+                    == ']' or this_char=='\"':
                 end = i
-                counter += 1
-                if begin == 0:
-                    begin = i
-            elif this_char in string.punctuation:
-                end = i
-        # An arbitrary number to decide whether the gap is likely to be a sentence or not
-        if counter >= min_sent_chars:
-            begin += previous_end
-            end = end + previous_end + 1
-            sentences.append(Span(begin, end))
-        pass
+                break
+        if end > begin != -1:
+            return Span(begin + previous_end, end + previous_end + 1)
+        else:
+            return None

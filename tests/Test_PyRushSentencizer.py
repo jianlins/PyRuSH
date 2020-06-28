@@ -57,6 +57,7 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
         sents = [s for s in doc.sents]
         for sent in sents:
             print('>' + str(sent) + '<\n\n')
+
         assert (len(sents) == 26)
         # SpaCy has no control of sentence end. Thus, it ends up with sloppy ends.
         assert (sents[1].text=='Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with'
