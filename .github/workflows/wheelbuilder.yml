@@ -104,7 +104,7 @@ jobs:
 
       - name: check downloaded
         run: |
-          mv ./dist/**/* ./dist/
+          mv ./dist/**/PyRuSH* ./dist/
           rm -rf dist/cp*
           rm -rf dist/sdist
           ls -R
