@@ -46,7 +46,7 @@ jobs:
           # so there is no way to pass this in directly.
           # This would require modifying cython's setup.py to look for these flags
           # in env vars.
-          CIBW_BEFORE_BUILD: python3 -m pip install -r requirements.txt
+          CIBW_BEFORE_BUILD: pip install -r requirements.txt
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
           # TODO: Cython tests take a long time to complete
