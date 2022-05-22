@@ -58,11 +58,11 @@ setup(
     license='Apache License',
     zip_safe=False,
     install_requires=[
-        'PyFastNER>=1.0.8b1', 'spacy>=2.2.2'
+        'PyFastNER>=1.0.8b1', 'spacy>=2.2.2','quicksectx>=0.3.1'
     ],
     ext_modules=cythonize(extensions, language_level=3),
     setup_requires=[
-        'PyFastNER>=1.0.8b9', 'spacy>=2.2.2'
+        'PyFastNER>=1.0.8b9', 'spacy>=2.2.2','quicksectx>=0.3.1'
     ],
     test_suite='nose.collector',
     tests_require='nose',
