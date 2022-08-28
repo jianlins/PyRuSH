@@ -22,7 +22,7 @@ jobs:
         # Github Actions doesn't support pairing matrix values together, let's improvise
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
-          - [ ubuntu-20.10, ubuntu-20.10 ]
+          - [ ubuntu-22.04, ubuntu-22.04 ]
           - [ ubuntu-20.04, ubuntu-20.04 ]
           - [ macos-10.15, macosx_10 ]
           - [ macos-11, macosx_11 ]
