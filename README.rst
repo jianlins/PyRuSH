@@ -1,6 +1,8 @@
 PyRuSH
 =========
 
+[![run nosetests](https://github.com/medspacy/PyRuSH/actions/workflows/run_nosetests.yml/badge.svg)](https://github.com/medspacy/PyRuSH/actions/workflows/run_nosetests.yml)
+
 PyRuSH is the python implementation of `RuSH <https://github.com/jianlins/RuSH>`_ (**Ru** le-based sentence **S** egmenter using **H** ashing), which is originally developed using Java. RuSH is an efficient, reliable, and easy adaptable rule-based sentence segmentation solution. It is specifically designed to handle the telegraphic written text in clinical note. It leverages a nested hash table to execute simultaneous rule processing, which reduces the impact of the rule-base growth on execution time and eliminates the effect of rule order on accuracy.
 
 If you wish to cite RuSH in a publication, please use:
