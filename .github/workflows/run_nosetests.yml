@@ -26,6 +26,7 @@ jobs:
           - [ ubuntu-20.04, ubuntu-20.04 ]
           - [ macos-10.15, macosx_10 ]
           - [ macos-11, macosx_11 ]
+          - [ macos-12, macosx_12 ]
           - [ windows-2019, win_amd64 ]
           - [ windows-2019, win32 ]
         #        spacy doesn't compile win32
