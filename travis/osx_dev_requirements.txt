@@ -1,3 +1,0 @@
-spacy>=2.2.2
-PyFastNER>=1.0.8b9
-nose

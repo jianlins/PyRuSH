@@ -9,11 +9,10 @@ class TestRuSH(unittest.TestCase):
 
     def setUp(self):
         pwd = os.path.dirname(os.path.abspath(__file__))
-        self.rush = PyRuSHSentencizer(str(os.path.join(pwd, 'rush_rules.tsv')))
 
     def test_doc(self):
         nlp = English()
-        nlp.add_pipe(self.rush)
+        nlp.add_pipe("medspacy_pyrush")
         doc = nlp("This is a sentence. This is another sentence.")
         print('\n'.join([str(s) for s in doc.sents]))
         print('\nTotal sentences: {}'.format(len([s for s in doc.sents])))
@@ -52,7 +51,7 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
         pwd = os.path.dirname(os.path.abspath(__file__))
         self.rush = PyRuSHSentencizer(str(os.path.join(pwd, 'rush_rules.tsv')))
         nlp = English()
-        nlp.add_pipe(self.rush)
+        nlp.add_pipe("medspacy_pyrush")
         doc = nlp(input_str)
         sents = [s for s in doc.sents]
         for sent in sents:
