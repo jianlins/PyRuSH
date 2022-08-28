@@ -7,21 +7,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  strategy:
-    # Ensure that a wheel builder finishes even if another fails
-    fail-fast: false
-    matrix:
-      # Github Actions doesn't support pairing matrix values together, let's improvise
-      # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
-      buildplat:
-        - [ ubuntu-20.04, manylinux_x86_64 ]
-        - [ ubuntu-20.04, musllinux_x86_64 ]
-        - [ macos-10.15, macosx_* ]
-        - [ windows-2019, win_amd64 ]
-        - [ windows-2019, win32 ]
-      #        spacy doesn't compile win32
-      #        python: ["cp36"] # Note: Wheels not needed for PyPy
-      python-version: [ "cp36", "cp37", "cp38", "cp39", "cp310" ] # Note: Wheels not needed for PyPy
   build_wheels:
     name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
     if: >-
@@ -30,6 +15,21 @@ jobs:
       (github.event_name == 'pull_request' &&
       contains(github.event.pull_request.labels.*.name, 'Build System'))
     runs-on: ${{ matrix.buildplat[0] }}
+    strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
+      matrix:
+        # Github Actions doesn't support pairing matrix values together, let's improvise
+        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
+        buildplat:
+          - [ ubuntu-20.04, manylinux_x86_64 ]
+          - [ ubuntu-20.04, musllinux_x86_64 ]
+          - [ macos-10.15, macosx_* ]
+          - [ windows-2019, win_amd64 ]
+          - [ windows-2019, win32 ]
+        #        spacy doesn't compile win32
+        #        python: ["cp36"] # Note: Wheels not needed for PyPy
+        python-version: [ "cp36", "cp37", "cp38", "cp39", "cp310" ] # Note: Wheels not needed for PyPy
     timeout-minutes: 45
     steps:
       - name: Checkout
