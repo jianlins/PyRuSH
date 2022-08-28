@@ -27,8 +27,8 @@ jobs:
           - [ macos-10.15, macosx_10 ]
           - [ macos-11, macosx_11 ]
           - [ macos-12, macosx_12 ]
-          - [ windows-2019, win_amd64 ]
-          - [ windows-2019, win32 ]
+          - [ windows-2019, windows-2019 ]
+          - [ windows-2022, windows-2022 ]
         #        spacy doesn't compile win32
         #        python: ["cp36"] # Note: Wheels not needed for PyPy
         python-version: [ "3.6", "3.7", "3.8", "3.9"] # Note: Wheels not needed for PyPy
