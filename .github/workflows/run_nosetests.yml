@@ -1,4 +1,4 @@
-name: run pytest
+name: run nosetests
 on:
   workflow_dispatch
 
