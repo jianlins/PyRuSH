@@ -48,8 +48,6 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
 
  End Ezoic - MTSam Sample Bottom Matched Content - native_bottom
 '''
-        pwd = os.path.dirname(os.path.abspath(__file__))
-        self.rush = PyRuSHSentencizer(str(os.path.join(pwd, 'rush_rules.tsv')))
         nlp = English()
         nlp.add_pipe("medspacy_pyrush")
         doc = nlp(input_str)
@@ -61,3 +59,24 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
         # SpaCy has no control of sentence end. Thus, it ends up with sloppy ends.
         assert (sents[1].text=='Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with'
                                ' chest pain and respiratory insufficiency.  ')
+
+    def test_doc3(self):
+        input_str = '''        
+
+
+            Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with chest pain and respiratory insufficiency.  She has chronic lung disease with bronchospastic angina.
+    We discovered new T-wave abnormalities on her EKG.  There was of course a four-vessel bypass surgery in 2001.  We did a coronary angiogram. 
+    
+    '''
+        from PyRuSH.RuSH import initLogger
+        initLogger()
+        nlp = English()
+        nlp.add_pipe("medspacy_pyrush")
+        doc = nlp(input_str)
+        sents = [s for s in doc.sents]
+        for sent in sents:
+            print('>' + str(sent) + '<\n\n')
+
+        # SpaCy has no control of sentence end. Thus, it ends up with sloppy ends.
+        assert (sents[1].text == 'Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with'
+                                     ' chest pain and respiratory insufficiency.  ')

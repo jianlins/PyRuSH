@@ -24,7 +24,7 @@ Installation
 How to use
 ------------
 
-A standalone RuSH class is available to be directly used in your code. 
+A standalone RuSH class is available to be directly used in your code. From 1.0.4, pyRush adopt spaCy 3.x api to initiate an component.
 
     >>> from PyRuSH import RuSH
     >>> input_str = "The patient was admitted on 03/26/08\n and was started on IV antibiotics elevation" +\
@@ -45,7 +45,7 @@ Start from version 1.0.3, PyRuSH adds Spacy compatible Sentencizer component: Py
     >>> from PyRuSH import PyRuSHSentencizer
     >>> from spacy.lang.en import English
     >>> nlp = English()
-    >>> nlp.add_pipe(PyRuSHSentencizer('conf/rush_rules.tsv'))))
+    >>> nlp.add_pipe("medspacy_pyrush")
     >>> doc = nlp("This is a sentence. This is another sentence.")
     >>> print('\n'.join([str(s) for s in doc.sents]))
     
