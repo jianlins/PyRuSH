@@ -67,5 +67,5 @@ setup(
     test_suite='nose.collector',
     tests_require='nose',
     data_files=[('demo_data', ['conf/rush_rules.tsv', 'conf/logging.ini'])],
-    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
+    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','conf/rush_rules.tsv']},
 )
