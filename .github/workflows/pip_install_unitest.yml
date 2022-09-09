@@ -49,6 +49,7 @@ jobs:
       - name: nose tests
         run: |
           ls /opt/hostedtoolcache/Python/3.6.15/x64/lib/python3.6/site-packages/PyRuSH
+          ls /opt/hostedtoolcache/Python/3.6.15/x64/lib/python3.6/site-packages/conf
           ls /opt/hostedtoolcache/Python/3.6.15/x64/lib/python3.6/site-packages/PyRuSH-1.0.5a1.data
           rm -rf PyRuSH
           rm -rf conf
