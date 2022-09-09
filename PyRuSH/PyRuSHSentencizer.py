@@ -15,14 +15,17 @@
 #  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 #  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # ******************************************************************************
+from spacy import Language
 from spacy.pipeline import Sentencizer
 
 from .RuSH import RuSH
 from .StaticSentencizerFun import cpredict, cset_annotations
 
 
+@Language.factory("medspacy_pyrush")
 class PyRuSHSentencizer(Sentencizer):
-    def __init__(self, rules_path: str = '', max_repeat: int = 50, auto_fix_gaps: bool = True) -> Sentencizer:
+    def __init__(self, nlp: Language, name: str = "medspacy_pyrush", rules_path: str = '', max_repeat: int = 50,
+                 auto_fix_gaps: bool = True) -> Sentencizer:
         """
 
         @param rules_path: The string of the rule file path or rules themselves.
@@ -31,6 +34,12 @@ class PyRuSHSentencizer(Sentencizer):
             However, this has no control of sentence end,
              TODO: need to see how the downsteam spacy components make use of doc.c
         """
+        self.nlp = nlp
+        self.name = name
+        if rules_path is None or rules_path == '':
+            import os
+            root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            rules_path = str(os.path.join(root, 'conf', 'rush_rules.tsv'))
         self.rules_path = rules_path
         self.rush = RuSH(rules=rules_path, max_repeat=max_repeat, auto_fix_gaps=auto_fix_gaps)
 

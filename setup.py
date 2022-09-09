@@ -58,14 +58,14 @@ setup(
     license='Apache License',
     zip_safe=False,
     install_requires=[
-        'PyFastNER>=1.0.8b1', 'spacy>=2.2.2','quicksectx>=0.3.1'
+        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
     ],
     ext_modules=cythonize(extensions, language_level=3),
     setup_requires=[
-        'PyFastNER>=1.0.8b9', 'spacy>=2.2.2','quicksectx>=0.3.1'
+        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
     ],
     test_suite='nose.collector',
     tests_require='nose',
     data_files=[('demo_data', ['conf/rush_rules.tsv', 'conf/logging.ini'])],
-    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c']},
+    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','conf/rush_rules.tsv']},
 )
