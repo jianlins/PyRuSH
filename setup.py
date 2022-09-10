@@ -57,6 +57,7 @@ setup(
     ],
     license='Apache License',
     zip_safe=False,
+    include_package_data=True,
     install_requires=[
         'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
     ],
