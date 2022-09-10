@@ -92,7 +92,8 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
         from PyRuSH.RuSH import initLogger
         initLogger()
         nlp = English()
-        nlp.add_pipe("medspacy_pyrush", config={'rules_path':'rush_rules.tsv'})
+        rule_path=os.path.join(os.path.dirname(__file__), 'rush_rules.tsv')
+        nlp.add_pipe("medspacy_pyrush", config={'rules_path':rule_path})
         doc = nlp(input_str)
         sents = [s for s in doc.sents]
         for sent in sents:
