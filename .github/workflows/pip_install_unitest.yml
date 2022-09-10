@@ -31,7 +31,7 @@ jobs:
         #        spacy doesn't compile win32
         #        python: ["cp36"] # Note: Wheels not needed for PyPy
         # python-version: [ "3.6", "3.7", "3.8", "3.9"] # Note: Wheels not needed for PyPy
-        python-version: [ "3.6"]
+        python-version: [ "3.7"]
     timeout-minutes: 45
     steps:
       - name: Checkout
