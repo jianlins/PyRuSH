@@ -48,7 +48,7 @@ jobs:
 
       - name: nose tests
         run: |                            
-          ls /opt/hostedtoolcache/Python/3*/x64/lib/python*/site-packages/conf
+          # ls /opt/hostedtoolcache/Python/3*/x64/lib/python*/site-packages/conf
           rm -rf PyRuSH
           rm -rf conf
           rm -rf notebooks
