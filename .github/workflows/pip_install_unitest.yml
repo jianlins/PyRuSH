@@ -49,9 +49,8 @@ jobs:
       - name: nose tests
         run: |                            
           # ls /opt/hostedtoolcache/Python/3*/x64/lib/python*/site-packages/conf
-          rm -rf PyRuSH
-          rm -rf conf
-          rm -rf notebooks
+          python -c "import shutil;shutil.rmtree('PyRuSH')"
+          python -c "import shutil;shutil.rmtree('conf')"
           ls
           python --version
           nosetests
