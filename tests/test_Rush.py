@@ -16,7 +16,6 @@ import os
 
 from PyRuSH import RuSH
 
-
 class TestRuSH(unittest.TestCase):
 
     def setUp(self):
@@ -110,6 +109,12 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
         sent = sentences[1]
         assert (input_str[sent.begin:sent.end] == '10.  Xopenex q.i.d. and p.r.n.')
 
+
+    def test_doc11(self):
+        input_str='  This is a sentence. This is another sentence.'
+        sentences=self.rush.segToSentenceSpans(input_str)
+        for sent in sentences:
+            print('>' + input_str[sent.begin:sent.end] + '<\n')
 
 if __name__ == '__main__':
     unittest.main()

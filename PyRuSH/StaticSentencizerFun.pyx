@@ -15,8 +15,6 @@
 #  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 #  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # ******************************************************************************
-from spacy.tokens import Doc
-
 cpdef cpredict(docs, sentencizer_fun):
     cdef list guesses
     cdef int s
@@ -48,7 +46,7 @@ cpdef cpredict(docs, sentencizer_fun):
     return guesses
 
 cpdef cset_annotations(docs, batch_tag_ids, tensors=None):
-    if isinstance(docs, Doc):
+    if type(docs) !=list:
         docs = [docs]
     for i, doc in enumerate(docs):
         doc_tag_ids = batch_tag_ids[i]

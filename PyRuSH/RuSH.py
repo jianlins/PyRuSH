@@ -78,7 +78,8 @@ datefmt=
 
 class RuSH:
 
-    def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True, min_sent_chars: int = 5,
+    def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
+                 min_sent_chars: int = 5,
                  enable_logger: bool = False):
         self.fastner = FastCNER(rules, max_repeat)
         self.fastner.span_compare_method = 'scorewidth'
@@ -115,10 +116,13 @@ class RuSH:
                 for span in spans:
                     rule = self.fastner.rule_store[span.rule_id]
                     self.logger.debug(
-                        '\t{0}-{1}:{2}\t{3}<{4}>\t[Rule {5}:\t{6}\t{7}\t{8}\t{9}]'.format(span.begin, span.end, span.score,
+                        '\t{0}-{1}:{2}\t{3}<{4}>\t[Rule {5}:\t{6}\t{7}\t{8}\t{9}]'.format(span.begin, span.end,
+                                                                                          span.score,
                                                                                           text[:span.begin],
-                                                                                          text[span.begin:span.begin + 1],
-                                                                                          rule.id, rule.rule, rule.rule_name,
+                                                                                          text[
+                                                                                          span.begin:span.begin + 1],
+                                                                                          rule.id, rule.rule,
+                                                                                          rule.rule_name,
                                                                                           rule.score, rule.type))
         begins = result[BEGIN]
         ends = result[END]
@@ -140,6 +144,8 @@ class RuSH:
 
             if self.auto_fix_gaps and len(output) > 0 and st_begin > output[-1].end:
                 self.fix_gap(output, text, output[-1].end, st_begin, self.min_sent_chars)
+            elif self.auto_fix_gaps and len(output) == 0 and st_begin > 0:
+                self.fix_gap(output, text, 0, st_begin, self.min_sent_chars)
 
             for k in range(j, len(ends)):
                 if i < len(begins) - 1 and k < len(ends) - 1 and begins[i + 1].begin < ends[k].begin + 1:
@@ -210,8 +216,8 @@ class RuSH:
                 break
         for i in range(this_begin - previous_end - 1, begin, -1):
             this_char = gap_chars[i]
-            if this_char.isalnum() or this_char == '.' or this_char == '!' or this_char == '?' or this_char == ')' or this_char\
-                    == ']' or this_char=='\"':
+            if this_char.isalnum() or this_char == '.' or this_char == '!' or this_char == '?' or this_char == ')' or this_char \
+                    == ']' or this_char == '\"':
                 end = i
                 break
         if end > begin != -1:

@@ -91,6 +91,18 @@ I will see her in a month to six weeks.  She is to follow up with Dr. X before t
     '''
         from PyRuSH.RuSH import initLogger
         initLogger()
+        from PyRuSH import RuSH
+        pwd = os.path.dirname(os.path.abspath(__file__))
+        rush = RuSH(str(os.path.join(pwd, 'rush_rules.tsv')), enable_logger=True)
+        sentences = rush.segToSentenceSpans(input_str)
+        # for i in range(0, len(sentences)):
+        #     sentence = sentences[i]
+        #     print('assert (sentences[' + str(i) + '].begin == ' + str(sentence.begin) + ' and sentences[' + str(
+        #         i) + '].end == ' + str(sentence.end) + ')')
+        # self.printDetails(sentences, input_str)
+        # print('\n\n'.join(['>{}<'.format(input_str[s.begin:s.end]) for s in sentences]))
+
+
         nlp = English()
         rule_path=os.path.join(os.path.dirname(__file__), 'rush_rules.tsv')
         nlp.add_pipe("medspacy_pyrush", config={'rules_path':rule_path})

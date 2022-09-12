@@ -85,6 +85,16 @@ class TestRuSH(unittest.TestCase):
         sentences = self.rush.segToSentenceSpans(input_str)
         self.printDetails(sentences, input_str)
 
+    def test7(self):
+        input_str = '''        
+
+
+                    Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with chest pain and respiratory insufficiency.  She has chronic lung disease with bronchospastic angina.
+            We discovered new T-wave abnormalities on her EKG.  There was of course a four-vessel bypass surgery in 2001.  We did a coronary angiogram. 
+
+            '''
+        sentences = self.rush.segToSentenceSpans(input_str)
+        self.printDetails(sentences, input_str)
 
 if __name__ == '__main__':
     unittest.main()
