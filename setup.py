@@ -3,7 +3,9 @@ from codecs import open
 from os import path
 from setuptools.extension import Extension
 from Cython.Build import cythonize, build_ext
-
+import numpy
+import spacy, cymem, preshed
+from distutils.sysconfig import get_python_inc
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
@@ -22,15 +24,21 @@ def get_version():
     except IOError:
         return "0.0.0a1"
 
-
+COMPILER_DIRECTIVES = {
+    "language_level": -3,
+    "embedsignature": True,
+    "annotation_typing": False,
+}
 dir_path = path.dirname(path.realpath(__file__))
-include_dirs = [dir_path + "/PyRuSH", dir_path, dir_path + "/PyRuSH"]
+include_dirs = [dir_path + "/PyRuSH", numpy.get_include(), path.dirname(spacy.__file__), path.dirname(cymem.__file__), path.dirname(preshed.__file__)]
 extensions = [
     Extension(
         'PyRuSH.StaticSentencizerFun',
         sources=['PyRuSH/StaticSentencizerFun.pyx'],
         include_dirs=include_dirs,
-    ),
+        language='c++',
+        extra_compile_args=["-std=c++11"],
+    )
 ]
 
 setup(
@@ -57,15 +65,15 @@ setup(
     ],
     license='Apache License',
     zip_safe=False,
+    include_package_data=True,
     install_requires=[
         'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
     ],
-    ext_modules=cythonize(extensions, language_level=3),
+    ext_modules=cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES),
     setup_requires=[
         'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
     ],
     test_suite='nose.collector',
     tests_require='nose',
-    data_files=[('demo_data', ['conf/rush_rules.tsv', 'conf/logging.ini'])],
-    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','conf/rush_rules.tsv']},
+    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','../conf/rush_rules.tsv']},
 )

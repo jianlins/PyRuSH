@@ -23,15 +23,15 @@ jobs:
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
           - [ ubuntu-20.04, ubuntu-20.04 ]
-          # - [ macos-10.15, macosx_10 ]
-          # - [ macos-11, macosx_11 ]
-          # - [ macos-12, macosx_12 ]
-          # - [ windows-2019, windows-2019 ]
-          # - [ windows-2022, windows-2022 ]
+          - [ macos-10.15, macosx_10 ]
+          - [ macos-11, macosx_11 ]
+          - [ macos-12, macosx_12 ]
+          - [ windows-2019, windows-2019 ]
+          - [ windows-2022, windows-2022 ]
         #        spacy doesn't compile win32
         #        python: ["cp36"] # Note: Wheels not needed for PyPy
-        # python-version: [ "3.6", "3.7", "3.8", "3.9"] # Note: Wheels not needed for PyPy
-        python-version: [ "3.6"]
+        python-version: [ "3.6", "3.7", "3.8", "3.9"] # Note: Wheels not needed for PyPy
+        # python-version: [ "3.7"]
     timeout-minutes: 45
     steps:
       - name: Checkout
@@ -47,12 +47,11 @@ jobs:
           pip install PyRuSH nose
 
       - name: nose tests
-        run: |
-          ls /opt/hostedtoolcache/Python/3.6.15/x64/lib/python3.6/site-packages/
-          ls /opt/hostedtoolcache/Python/3.6.15/x64/lib/python3.6/site-packages/PyRuSH
-          rm -rf PyRuSH
-          rm -rf conf
-          rm -rf notebooks
+        run: |                            
+          # ls /opt/hostedtoolcache/Python/3*/x64/lib/python*/site-packages/conf
+          python -c "import shutil;shutil.rmtree('PyRuSH')"
+          python -c "import shutil;shutil.rmtree('conf')"
+          ls
           python --version
           nosetests
 
