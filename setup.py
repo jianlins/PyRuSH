@@ -25,7 +25,7 @@ def get_version():
         return "0.0.0a1"
 
 COMPILER_DIRECTIVES = {
-    "language_level": -3,
+    "language_level": 3,
     "embedsignature": True,
     "annotation_typing": False,
 }
