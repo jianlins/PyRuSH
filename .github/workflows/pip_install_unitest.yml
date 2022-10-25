@@ -30,7 +30,7 @@ jobs:
           - [ windows-2022, windows-2022 ]
         #        spacy doesn't compile win32
         #        python: ["cp36"] # Note: Wheels not needed for PyPy
-        python-version: [ "3.6", "3.7", "3.8", "3.9"] # Note: Wheels not needed for PyPy
+        python-version: [ "3.6", "3.7", "3.8", "3.9","3.10.x","3.11"] # Note: Wheels not needed for PyPy
         # python-version: [ "3.7"]
     timeout-minutes: 45
     steps:
