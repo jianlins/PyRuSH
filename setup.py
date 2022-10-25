@@ -30,7 +30,7 @@ COMPILER_DIRECTIVES = {
     "annotation_typing": False,
 }
 dir_path = path.dirname(path.realpath(__file__))
-include_dirs = [dir_path + "/PyRuSH", numpy.get_include(), path.dirname(spacy.__file__), path.dirname(cymem.__file__), path.dirname(preshed.__file__)]
+include_dirs = [dir_path + "/PyRuSH", dir_path, numpy.get_include(), path.dirname(spacy.__file__), path.dirname(cymem.__file__), path.dirname(preshed.__file__)]
 extensions = [
     Extension(
         'PyRuSH.StaticSentencizerFun',
@@ -67,11 +67,11 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
+        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1','numpy'
     ],
     ext_modules=cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES),
     setup_requires=[
-        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1'
+        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1','numpy'
     ],
     test_suite='nose.collector',
     tests_require='nose',
