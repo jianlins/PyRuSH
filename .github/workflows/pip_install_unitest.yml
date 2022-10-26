@@ -44,8 +44,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install cython
-          pip install --pre PyRuSH pytest
+          pip install PyRuSH pytest
+          pip uninstall -y PyRuSH
+          pip install --pre PyRuSH
 
       - name: nose tests
         run: |                            
