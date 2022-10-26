@@ -50,6 +50,7 @@ jobs:
           CIBW_BEFORE_BUILD: pip install -r requirements.txt
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
+          CIBW_BEFORE_TEST: pip install pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
 
       - name: check build
