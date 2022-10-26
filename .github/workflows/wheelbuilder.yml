@@ -56,7 +56,7 @@ jobs:
         run: |
           ls wheelhouse
           pip install pytest
-          pip install wheelhouse/${{ matrix.python }}-${{ matrix.buildplat[1] }}.whl
+          pip install wheelhouse/PyRuSH-*-${{ matrix.python }}-${{ matrix.buildplat[1] }}.whl
           cd tests 
           pytest ./
           
