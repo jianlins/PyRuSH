@@ -45,7 +45,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install cython
-          pip install --pre PyRuSH pytest
+          pip install PyRuSH==1.0.7dev2 pytest
 
       - name: nose tests
         run: |                            

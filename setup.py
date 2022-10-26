@@ -56,6 +56,9 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Development Status :: 3 - Alpha',
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
@@ -67,11 +70,11 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1','numpy'
+        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.3','numpy'
     ],
     ext_modules=cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES),
     setup_requires=[
-        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.1','numpy'
+        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.3','numpy'
     ],
     test_suite='nose.collector',
     tests_require='nose',
