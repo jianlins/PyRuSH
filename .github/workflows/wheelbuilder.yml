@@ -50,15 +50,11 @@ jobs:
           CIBW_BEFORE_BUILD: pip install -r requirements.txt
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
-#          CIBW_TEST_COMMAND: pytest {package}/tests
+          CIBW_TEST_COMMAND: pytest tests
 
       - name: check build
         run: |
-          ls wheelhouse
-          pip install pytest
-          pip install wheelhouse/PyRuSH-*-${{ matrix.python }}-${{ matrix.buildplat[1] }}.whl
-          cd tests 
-          pytest ./
+          ls -l wheelhouse
           
 
       - uses: actions/upload-artifact@v3
