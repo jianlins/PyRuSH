@@ -1,15 +1,24 @@
-from setuptools import setup
+from setuptools import setup, dist
+from setuptools.extension import Extension
 from codecs import open
 from os import path
-from setuptools.extension import Extension
-from Cython.Build import cythonize, build_ext
+
+from Cython.Build import cythonize
 import numpy
 import spacy, cymem, preshed
 from distutils.sysconfig import get_python_inc
+
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+
+def parse_requirements(filename):
+    """ load requirements from a pip requirements file """
+    lineiter = (line.strip() for line in open(filename))
+    return [line.split("#")[0].strip() for line in lineiter if line and not line.startswith("#")]
+
+print(parse_requirements('requirements.txt'))
 
 def get_version():
     """Load the version from version.py, without importing it.
@@ -30,7 +39,12 @@ COMPILER_DIRECTIVES = {
     "annotation_typing": False,
 }
 dir_path = path.dirname(path.realpath(__file__))
-include_dirs = [dir_path + "/PyRuSH", dir_path, numpy.get_include(), path.dirname(spacy.__file__), path.dirname(cymem.__file__), path.dirname(preshed.__file__)]
+
+include_dirs = [dir_path + "/PyRuSH", dir_path,
+                numpy.get_include(),
+                path.dirname(spacy.__file__),
+                path.dirname(cymem.__file__),
+                path.dirname(preshed.__file__)]
 extensions = [
     Extension(
         'PyRuSH.StaticSentencizerFun',
@@ -69,13 +83,8 @@ setup(
     license='Apache License',
     zip_safe=False,
     include_package_data=True,
-    install_requires=[
-        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.3','numpy'
-    ],
+    install_requires=parse_requirements('requirements.txt'),
     ext_modules=cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES),
-    setup_requires=[
-        'PyFastNER>=1.0.8', 'spacy>=3.0.0','quicksectx>=0.3.3','numpy'
-    ],
     test_suite='nose.collector',
     tests_require='nose',
     package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','../conf/rush_rules.tsv']},
