@@ -1,7 +1,6 @@
-Cython>=0.29.32
+Cython>=0.25,<3.0
 setuptools>=65.5.0
 numpy
 spacy>=3.0.0
 PyFastNER>=1.0.8
 quicksectx @ git+https://github.com/jianlins/quicksectx@master
-#quicksectx>=0.3.3 @ git+https://github.com/jianlins/quicksectx@master
