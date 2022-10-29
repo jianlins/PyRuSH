@@ -50,7 +50,7 @@ jobs:
           pip install -r dev-requirements.txt
           pip install -U spacy==3.4.1
 
-      - name: nose tests
+      - name:  pytests
         run: |
           python --version
           python setup.py build_ext --inplace
