@@ -3,4 +3,4 @@ setuptools
 numpy
 spacy>=3.0.0
 PyFastNER>=1.0.8
-quicksectx>=0.3.4
+quicksectx>=0.3.5
