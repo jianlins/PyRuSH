@@ -1,2 +1,2 @@
 [build-system]
-requires = ["setuptools>=65.5.0", "wheel", 'Cython>=0.25,<3.0', 'numpy>=1.10', "spacy>=3.0.0", "cymem", "preshed","quicksectx>=0.3.4","PyFastNER>=1.0.8"]
+requires = ["setuptools", "wheel", 'Cython>=0.25,<3.0', 'numpy>=1.10', "spacy>=3.0.0", "cymem", "preshed","quicksectx>=0.3.4","PyFastNER>=1.0.8"]
