@@ -85,7 +85,6 @@ setup(
     include_package_data=True,
     install_requires=parse_requirements('requirements.txt'),
     ext_modules=cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES),
-    test_suite='nose.collector',
-    tests_require='nose',
+    tests_require='pytest',
     package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','../conf/rush_rules.tsv']},
 )
