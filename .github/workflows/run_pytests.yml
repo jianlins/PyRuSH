@@ -53,7 +53,7 @@ jobs:
       - name:  pytests
         run: |
           python --version
-          python setup.py build_ext --inplace
+          pip install ./
           pytest tests
 
 
