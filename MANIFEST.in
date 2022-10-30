@@ -1,2 +1,3 @@
 include conf/rush_rules.tsv
 include PyRuSH/StaticSentencizerFun.pyx
+include requirements.txt
