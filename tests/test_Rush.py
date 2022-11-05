@@ -48,6 +48,7 @@ class TestRuSH(unittest.TestCase):
 
 '''
         sentences = self.rush.segToSentenceSpans(input_str)
+        print([s.begin, s.end] for s in sentences)
         assert (sentences[0].begin == 1 and sentences[0].end == 22)
         assert (sentences[1].begin == 31 and sentences[1].end == 62)
         assert (sentences[2].begin == 71 and sentences[2].end == 100)

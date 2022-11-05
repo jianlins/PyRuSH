@@ -29,7 +29,7 @@
 # limitations under the License.
 
 from .PyRuSHSentencizer import PyRuSHSentencizer
-from .RuSH import RuSH, BEGIN, END
+from .RuSH import RuSH
 from .version import __version__
 
 

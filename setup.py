@@ -6,11 +6,22 @@ from os import path
 from Cython.Build import cythonize
 import numpy
 import spacy, cymem, preshed
-from distutils.sysconfig import get_python_inc
+from setuptools.command.install import install
+from distutils.spawn import find_executable
 
 here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.MD'), encoding='utf-8') as f:
     long_description = f.read()
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+    def run(self):
+        install.run(self)
+        # install jre 8 if java is absent
+        if find_executable('java') is None:
+            pass
+
+
 
 
 def parse_requirements(filename):
@@ -86,5 +97,7 @@ setup(
     install_requires=parse_requirements('requirements.txt'),
     ext_modules=cythonize(extensions, compiler_directives=COMPILER_DIRECTIVES),
     tests_require='pytest',
-    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c','../conf/rush_rules.tsv','../requirements.txt']},
+    package_data={'': ['*.pyx', '*.pxd', '*.so', '*.dll', '*.lib', '*.cpp', '*.c',
+                       '../conf/rush_rules.tsv','../requirements.txt'
+                       ,'../lib/*.jar']},
 )
