@@ -80,14 +80,14 @@ class RuSH:
     def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
                  min_sent_chars: int = 5,
                  enable_logger: bool = False, py4jar: str = 'lib/py4j0.10.9.7.jar',
-                 rushjar: str = 'lib/rush-1.4.1.5-jdk1.8-jar-with-dependencies.jar',
+                 rushjar: str = 'lib/rush-2.0.0.0-jdk1.8-jar-with-dependencies.jar',
                  java_path: str = 'java'):
 
         root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         if not Path(py4jar).exists():
             py4jar = str(os.path.join(root, 'lib', 'py4j0.10.9.7.jar'))
         if not Path(rushjar).exists():
-            rushjar = str(os.path.join(root, 'lib', 'rush-1.4.1.5-jdk1.8-jar-with-dependencies.jar'))
+            rushjar = str(os.path.join(root, 'lib', 'rush-2.0.0.0-jdk1.8-jar-with-dependencies.jar'))
         self.gateway = JavaGateway.launch_gateway(jarpath=py4jar,
                                                             classpath=rushjar,
                                                             java_path=java_path, die_on_exit=True, use_shell=False)
@@ -109,8 +109,39 @@ class RuSH:
         # log important message for debugging use
         if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
             text = text.replace('\n', ' ')
-
+        if len(output)>0:
+            for i, span in enumerate(output):
+                if i==0:
+                    span=RuSH.trim_gap(text, 0, span.begin)
+                else:
+                    previous=output[i-1]
+                    span=RuSH.trim_gap(text, previous.end, span.begin)
+                if span is not None:
+                    output[i]=span
         return output
 
     def shutdownJVM(self):
         self.gateway.shutdown()
+
+    @staticmethod
+    def trim_gap(text: str, previous_end: int, this_begin: int) -> Span:
+        begin = -1
+        alnum_begin = -1
+        end = 0
+        gap_chars = list(text[previous_end:this_begin])
+        # trim left
+        for i in range(0, this_begin - previous_end):
+            this_char = gap_chars[i]
+            if not this_char.isspace():
+                begin = i
+                break
+        for i in range(this_begin - previous_end - 1, begin, -1):
+            this_char = gap_chars[i]
+            if this_char.isalnum() or this_char == '.' or this_char == '!' or this_char == '?' or this_char == ')' or this_char \
+                    == ']' or this_char == '\"':
+                end = i
+                break
+        if end > begin != -1:
+            return Span(begin + previous_end, end + previous_end + 1)
+        else:
+            return None

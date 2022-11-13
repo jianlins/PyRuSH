@@ -820,6 +820,9 @@ Instructions:\n+(\a	0	stbegin
 \sand)\n+\C	3	stend
 \sand)\n+\c	3	stend
 
+\s\a\.\w+and	3	stend
+\.\a\.\w+and	3	stend
+
 
 
 \c(:)\s+\p+\s+\n	2	stend
