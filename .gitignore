@@ -7,3 +7,4 @@ dist
 *.c
 *.cpp
 .ipynb_checkpoints
+data
