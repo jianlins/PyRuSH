@@ -67,8 +67,8 @@ extensions = [
 ]
 
 setup(
-    name='PyRuSH',
-    packages=['PyRuSH'],  # this must be the same as the name above
+    name='pyrush-jre',
+    packages=['pyrush-jre'],  # this must be the same as the name above
     version=get_version(),
     description='A fast implementation of RuSH (Rule-based sentence Segmenter using Hashing).',
     author='Jianlin',
