@@ -1,6 +1,12 @@
 from setuptools import setup, dist
 from setuptools.extension import Extension
 from os import path
+from codecs import open
+from Cython.Build import cythonize
+import numpy,os
+import spacy, cymem, preshed
+from distutils.sysconfig import get_python_inc
+
 dir_path = path.dirname(path.realpath(__file__))
 
 include_dirs = [dir_path + "/PyRuSH", dir_path,
@@ -19,11 +25,7 @@ extensions = [
 ]
 
 
-from codecs import open
-from Cython.Build import cythonize
-import numpy,os
-import spacy, cymem, preshed
-from distutils.sysconfig import get_python_inc
+
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
