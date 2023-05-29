@@ -1,8 +1,12 @@
-
-
 from setuptools import setup, dist
 from setuptools.extension import Extension
+dir_path = path.dirname(path.realpath(__file__))
 
+include_dirs = [dir_path + "/PyRuSH", dir_path,
+                numpy.get_include(),
+                path.dirname(spacy.__file__),
+                path.dirname(cymem.__file__),
+                path.dirname(preshed.__file__)]
 extensions = [
     Extension(
         'PyRuSH.StaticSentencizerFun',
@@ -51,13 +55,7 @@ COMPILER_DIRECTIVES = {
     "embedsignature": True,
     "annotation_typing": False,
 }
-dir_path = path.dirname(path.realpath(__file__))
 
-include_dirs = [dir_path + "/PyRuSH", dir_path,
-                numpy.get_include(),
-                path.dirname(spacy.__file__),
-                path.dirname(cymem.__file__),
-                path.dirname(preshed.__file__)]
 
 
 setup(
