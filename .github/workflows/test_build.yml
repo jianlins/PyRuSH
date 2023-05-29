@@ -1,0 +1,116 @@
+name: Wheel Builder
+on:
+  workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_wheels:
+    name: Build ${{ matrix.python }}-${{ matrix.os }}-${{ matrix.cibw_archs }}
+    runs-on: ${{ matrix.cibw_archs || matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [cp38]
+        # python: [cp38, cp39, cp310, cp311]
+        os: [ubuntu-20.04, windows-latest, macos-11]
+        include:
+          - os: ubuntu-20.04
+            cibw_archs: "x86_64"
+          - os: ubuntu-20.04
+            cibw_archs: "aarch64"
+          - os: windows-latest
+            cibw_archs: "auto"
+          - os: macos-11
+            cibw_archs: "x86_64 universal2 arm64"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+    
+      - name: Build/Test/Package
+        env:
+          CIBW_ARCHS: ${{ matrix.cibw_archs }}
+          CIBW_BUILD: ${{matrix.python}}-*
+          CIBW_BUILD_VERBOSITY: 1
+          # containerized Linux builds require explicit CIBW_ENVIRONMENT
+          CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {package}/tests
+        run: |
+          pip install -U --user cibuildwheel
+          python -m cibuildwheel --platform auto --output-dir dist .
+
+      - name: check build
+        run: |
+          python --version
+          ls -l wheelhouse
+          
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.python }}-${{ matrix.os }}
+          path: ./wheelhouse/*.whl
+
+
+
+  build_sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout quicksectx
+        uses: actions/checkout@v3
+      # Used to push the built wheels
+      - uses: actions/setup-python@v4
+        with:
+          # Build sdist on lowest supported Python
+          python-version: '3.8.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build sdist
+        run: |
+          python setup.py sdist
+      - uses: actions/upload-artifact@v3
+        with:
+          name: sdist
+          path: ./dist/*.tar.gz
+
+  upload_pypi:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    # upload to PyPI on every tag starting with 'v'
+#    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    # alternatively, to publish when a GitHub Release is created, use the following rule:
+    # if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/setup-python@v4
+      - name: Install dependencies
+        run: |
+          pip install twine
+
+      - uses: actions/download-artifact@v3
+        with:
+          path: dist
+
+      - name: check downloaded
+        run: |
+          mv ./dist/**/PyRuSH* ./dist/
+          rm -rf dist/cp*
+          rm -rf dist/sdist
+          ls -R
+
+#       - name: Build and publish
+#         run: |
+#           twine upload --skip-existing --verbose dist/*
+#         env:
+# #          TWINE_REPOSITORY: testpypi
+#           TWINE_USERNAME: __token__
+#           TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
