@@ -1,6 +1,13 @@
 name: pip_install_unitest
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      install_prerelease:
+        description: 'Check this to install the prerelease version of medspacy if available and the version is newer than formal release.'  
+        type: boolean   
+        required: false
+        default: false
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -39,13 +46,26 @@ jobs:
       - name: set up python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}   
+          cache: 'pip'   
+          cache-dependency-path: |
+            'requirements/requirements.txt'
+            'requirements/requirements_tests.txt'
 
-      - name: Install dependencies
+      - name: Update pip
         run: |
           python -m pip install --upgrade pip
-          pip install cython
-          pip install PyRuSH==1.0.8 pytest
+          pip install cython pytest
+
+      - name: Install prereleased pyrush
+        if: ${{ github.event.inputs.install_prerelease == 'true' }} 
+        run: |
+          pip install --pre pyrush
+    
+      - name: Install formal released pyrush
+        if: ${{ github.event.inputs.install_prerelease == 'false' }}  
+        run: |
+          pip install pyrush
 
       - name: nose tests
         run: |                            
