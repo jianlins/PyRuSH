@@ -1,4 +1,0 @@
-spacy>=3.0.0
-PyFastNER>=1.0.8
-pytest
-quicksectx>=0.3.5
