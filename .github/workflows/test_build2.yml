@@ -28,6 +28,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+    
+      - name: Cache cibuild
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cibuilds
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.13.0
