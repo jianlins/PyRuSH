@@ -1,5 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel","Cython>=0.25,<3.0","numpy"]
+# need to added here to use cibuildwheel package
+requires = ["setuptools>=61.0.0", "wheel","Cython>=0.25,<3.0","numpy","spacy>=3.0.0, <=3.6","PyFastNER>=1.0.8","quicksectx>=0.3.5"]
 build-backend = "setuptools.build_meta"
 
 [project]

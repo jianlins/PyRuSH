@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   build_wheels:
-    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    name: Build ${{ matrix.python }}-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -31,7 +31,7 @@ jobs:
           # so there is no way to pass this in directly.
           # This would require modifying cython's setup.py to look for these flags
           # in env vars.
-          CIBW_BEFORE_BUILD: pip install -r requirements.txt
+          CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_BUILD: ${{ matrix.python }}-*
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
           CIBW_TEST_REQUIRES: pytest
