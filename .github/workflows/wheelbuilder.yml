@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   build_wheels:
-    name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    name: Build ${{ matrix.python }}-${{ matrix.buildplat[1] }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
