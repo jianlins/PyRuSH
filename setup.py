@@ -21,15 +21,14 @@ def parse_requirements(filename):
 print(parse_requirements('requirements.txt'))
 
 def get_version():
-    """Load the version from version.py, without importing it.
+    """Load the version from VERSION, without importing it.
 
     This function assumes that the last line in the file contains a variable defining the
     version string with single quotes.
 
     """
     try:
-        with open('PyRuSH/version.py', 'r') as f:
-            return f.read().split('\n')[0].split('=')[-1].replace('\'', '').strip()
+        return open(os.path.join(os.path.dirname(__file__), 'PyRuSH', 'VERSION')).read()
     except IOError:
         return "0.0.0a1"
 
