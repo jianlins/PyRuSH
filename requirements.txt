@@ -1,6 +1,5 @@
 Cython>=0.25,<3.0
-setuptools
 numpy
-spacy>=3.0.0
+spacy>=3.0.0, <=3.6
 PyFastNER>=1.0.8
 quicksectx>=0.3.5
