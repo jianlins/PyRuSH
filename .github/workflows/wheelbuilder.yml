@@ -50,6 +50,7 @@ jobs:
 
       - name: check build
         run: |
+          python --version
           ls -l wheelhouse
           
 
