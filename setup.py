@@ -1,3 +1,8 @@
+
+
+from setuptools import setup, dist
+from setuptools.extension import Extension
+
 extensions = [
     Extension(
         'PyRuSH.StaticSentencizerFun',
@@ -8,8 +13,7 @@ extensions = [
     )
 ]
 
-from setuptools import setup, dist
-from setuptools.extension import Extension
+
 from codecs import open
 from os import path
 
