@@ -1,3 +1,13 @@
+extensions = [
+    Extension(
+        'PyRuSH.StaticSentencizerFun',
+        sources=['PyRuSH/StaticSentencizerFun.pyx'],
+        include_dirs=include_dirs,
+        language='c++',
+        extra_compile_args=["-std=c++11"],
+    )
+]
+
 from setuptools import setup, dist
 from setuptools.extension import Extension
 from codecs import open
@@ -44,15 +54,7 @@ include_dirs = [dir_path + "/PyRuSH", dir_path,
                 path.dirname(spacy.__file__),
                 path.dirname(cymem.__file__),
                 path.dirname(preshed.__file__)]
-extensions = [
-    Extension(
-        'PyRuSH.StaticSentencizerFun',
-        sources=['PyRuSH/StaticSentencizerFun.pyx'],
-        include_dirs=include_dirs,
-        language='c++',
-        extra_compile_args=["-std=c++11"],
-    )
-]
+
 
 setup(
     name='PyRuSH',
