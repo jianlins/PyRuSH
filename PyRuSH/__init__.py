@@ -30,7 +30,7 @@
 
 from .PyRuSHSentencizer import PyRuSHSentencizer
 from .RuSH import RuSH, BEGIN, END
-from ._version import __version__
+from .version import __version__
 
 
 
