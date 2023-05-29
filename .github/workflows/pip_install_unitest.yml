@@ -60,7 +60,10 @@ jobs:
       - name: Install prereleased pyrush
         if: ${{ github.event.inputs.install_prerelease == 'true' }} 
         run: |
-          pip install --pre pyrush
+          pip install --pre PyFastNER FastNER 
+          pip install PyRuSH
+          pip uninstall -y PyRuSH
+          pip install --pre PyRuSH
     
       - name: Install formal released pyrush
         if: ${{ github.event.inputs.install_prerelease == 'false' }}  
