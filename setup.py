@@ -4,7 +4,7 @@ from codecs import open
 from os import path
 
 from Cython.Build import cythonize
-import numpy
+import numpy,os
 import spacy, cymem, preshed
 from distutils.sysconfig import get_python_inc
 
