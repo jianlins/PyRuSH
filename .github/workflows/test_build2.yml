@@ -52,7 +52,7 @@ jobs:
           # This would require modifying cython's setup.py to look for these flags
           # in env vars.
           CIBW_BEFORE_BUILD: "pwd; ls; pip install -r requirements.txt ; python setup.py build_ext --inplace"
-          CIBW_BUILD: ${{ matrix.python }}-*
+          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
