@@ -9,11 +9,6 @@ concurrency:
 jobs:
   build_wheels:
     name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    if: >-
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' &&
-      contains(github.event.pull_request.labels.*.name, 'Build System'))
     runs-on: ${{ matrix.buildplat[0] }}
     timeout-minutes: 50
     strategy:
