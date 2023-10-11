@@ -1,13 +1,32 @@
 from setuptools import setup, dist
 from setuptools.extension import Extension
-from codecs import open
 from os import path
-
+from codecs import open
 from Cython.Build import cythonize
-import numpy
+import numpy,os
 import spacy, cymem, preshed
 from setuptools.command.install import install
 from distutils.spawn import find_executable
+
+dir_path = path.dirname(path.realpath(__file__))
+
+include_dirs = [dir_path + "/PyRuSH", dir_path,
+                numpy.get_include(),
+                path.dirname(spacy.__file__),
+                path.dirname(cymem.__file__),
+                path.dirname(preshed.__file__)]
+extensions = [
+    Extension(
+        'PyRuSH.StaticSentencizerFun',
+        sources=['PyRuSH/StaticSentencizerFun.pyx'],
+        include_dirs=include_dirs,
+        language='c++',
+        extra_compile_args=["-std=c++11"],
+    )
+]
+
+
+
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.MD'), encoding='utf-8') as f:
@@ -32,15 +51,14 @@ def parse_requirements(filename):
 print(parse_requirements('requirements.txt'))
 
 def get_version():
-    """Load the version from version.py, without importing it.
+    """Load the version from VERSION, without importing it.
 
     This function assumes that the last line in the file contains a variable defining the
     version string with single quotes.
 
     """
     try:
-        with open('PyRuSH/version.py', 'r') as f:
-            return f.read().split('\n')[0].split('=')[-1].replace('\'', '').strip()
+        return open(os.path.join(os.path.dirname(__file__), 'PyRuSH', 'VERSION')).read()
     except IOError:
         return "0.0.0a1"
 
@@ -49,22 +67,8 @@ COMPILER_DIRECTIVES = {
     "embedsignature": True,
     "annotation_typing": False,
 }
-dir_path = path.dirname(path.realpath(__file__))
 
-include_dirs = [dir_path + "/PyRuSH", dir_path,
-                numpy.get_include(),
-                path.dirname(spacy.__file__),
-                path.dirname(cymem.__file__),
-                path.dirname(preshed.__file__)]
-extensions = [
-    Extension(
-        'PyRuSH.StaticSentencizerFun',
-        sources=['PyRuSH/StaticSentencizerFun.pyx'],
-        include_dirs=include_dirs,
-        language='c++',
-        extra_compile_args=["-std=c++11"],
-    )
-]
+
 
 setup(
     name='pyrush-jre',

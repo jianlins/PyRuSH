@@ -1,4 +1,4 @@
-name: Wheel Builder
+name: test Builder
 on:
   workflow_dispatch
 
@@ -8,40 +8,42 @@ concurrency:
 
 jobs:
   build_wheels:
-    name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    runs-on: ${{ matrix.buildplat[0] }}
+    name: Build ${{ matrix.python }}-${{ matrix.os }}-${{ matrix.cibw_archs }}
+    runs-on: ${{ matrix.cibw_archs || matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
-      # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
       matrix:
-        # Github Actions doesn't support pairing matrix values together, let's improvise
-        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
-        buildplat:
-          - [ubuntu-20.04, manylinux_x86_64]
-          # - [ubuntu-20.04, musllinux_x86_64]
-          # - [macos-12, macosx_x86_64]
-          # - [windows-2019, win_amd64]
-          # - [windows-2019, win32]
-        # python: ["cp39", "cp310", "cp311"]
-        python: ["cp38"]
-
+        python: [cp38]
+        # python: [cp38, cp39, cp310, cp311]
+        os: [ubuntu-20.04, windows-latest, macos-11]
+        include:
+          - os: ubuntu-20.04
+            cibw_archs: "x86_64"
+          - os: ubuntu-20.04
+            cibw_archs: "aarch64"
+          - os: windows-latest
+            cibw_archs: "auto"
+          - os: macos-11
+            cibw_archs: "x86_64 universal2 arm64"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.13.0
+    
+      - name: Build/Test/Package
         env:
-          # TODO: Build Cython with the compile-all flag?
-          # Unfortunately, there is no way to modify cibuildwheel's build command
-          # so there is no way to pass this in directly.
-          # This would require modifying cython's setup.py to look for these flags
-          # in env vars.
-          CIBW_BEFORE_BUILD: "pwd; ls; pip install -r requirements.txt; cd PyRuSH; python setup.py build_ext --inplace"
-          CIBW_BUILD: ${{ matrix.python }}-*
+          CIBW_ARCHS: ${{ matrix.cibw_archs }}
+          CIBW_BUILD: ${{matrix.python}}-*
+          CIBW_BUILD_VERBOSITY: 1
+          # containerized Linux builds require explicit CIBW_ENVIRONMENT
           CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest {package}/tests
+        run: |
+          pip install -U --user cibuildwheel
+          python -m cibuildwheel --platform auto --output-dir dist .
 
       - name: check build
         run: |
