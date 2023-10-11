@@ -57,15 +57,15 @@ class TestRuSH(unittest.TestCase):
     def test4(self):
         input_str = 'Delirium - '
         sentences = self.rush.segToSentenceSpans(input_str)
-        assert (sentences[0].begin == 0 and sentences[0].end == 8)
+        assert (sentences[0].begin == 0 and sentences[0].end == 10)
         pass
 
     def test5(self):
         input_str = "The patient complained about the TIA \n\n No memory issues. \"I \n\nOrdered the MRI scan.- "
         sentences = self.rush.segToSentenceSpans(input_str)
         assert (sentences[0].begin == 0 and sentences[0].end == 36)
-        assert (sentences[1].begin == 39 and sentences[1].end == 57)
-        assert (sentences[2].begin == 58 and sentences[2].end == 84)
+        assert (sentences[1].begin == 40 and sentences[1].end == 57)
+        assert (sentences[2].begin == 58 and sentences[2].end == 85)
         pass
 
     def printDetails(self, sentences, input_str):
@@ -86,15 +86,20 @@ class TestRuSH(unittest.TestCase):
         self.printDetails(sentences, input_str)
 
     def test7(self):
-        input_str = '''        
-
-
+        input_str = '''      
                     Ms. ABCD is a 69-year-old lady, who was admitted to the hospital with chest pain and respiratory insufficiency.  She has chronic lung disease with bronchospastic angina.
             We discovered new T-wave abnormalities on her EKG.  There was of course a four-vessel bypass surgery in 2001.  We did a coronary angiogram. 
 
             '''
         sentences = self.rush.segToSentenceSpans(input_str)
         self.printDetails(sentences, input_str)
+        assert (sentences[0].begin == 27 and sentences[0].end == 138)
+        assert (sentences[1].begin == 140 and sentences[1].end == 196)
+        assert (sentences[2].begin == 209 and sentences[2].end == 259)
+        assert (sentences[3].begin == 261 and sentences[3].end == 318)
+        assert (sentences[4].begin == 320 and sentences[4].end == 348)
+
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -32,11 +32,10 @@ import logging.config
 import os.path
 from typing import Union, List
 
-from PyFastNER import FastCNER
 from PyFastNER import Span
-
-BEGIN = 'stbegin'
-END = 'stend'
+from py4j.java_gateway import JavaGateway
+import os
+from pathlib import Path
 
 
 def initLogger():
@@ -80,127 +79,49 @@ class RuSH:
 
     def __init__(self, rules: Union[str, List] = '', max_repeat: int = 50, auto_fix_gaps: bool = True,
                  min_sent_chars: int = 5,
-                 enable_logger: bool = False):
-        self.fastner = FastCNER(rules, max_repeat)
-        self.fastner.span_compare_method = 'scorewidth'
+                 enable_logger: bool = False, py4jar: str = 'lib/py4j0.10.9.7.jar',
+                 rushjar: str = 'lib/rush-2.0.0.0-jdk1.8-jar-with-dependencies.jar',
+                 java_path: str = 'java'):
+
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if not Path(py4jar).exists():
+            py4jar = str(os.path.join(root, 'lib', 'py4j0.10.9.7.jar'))
+        if not Path(rushjar).exists():
+            rushjar = str(os.path.join(root, 'lib', 'rush-2.0.0.0-jdk1.8-jar-with-dependencies.jar'))
+        self.gateway = JavaGateway.launch_gateway(jarpath=py4jar,
+                                                            classpath=rushjar,
+                                                            java_path=java_path, die_on_exit=True, use_shell=False)
+        if isinstance(rules, List):
+            rules = '\n'.join(rules)
+        self.jrush = self.gateway.jvm.edu.utah.bmi.nlp.rush.core.RuSH(rules)
         if enable_logger:
             initLogger()
+            self.gateway.jvm.py4j.GatewayServer.turnLoggingOn()
             self.logger = logging.getLogger(__name__)
-            print(self.logger.level)
         else:
             self.logger = None
-        self.auto_fix_gaps = auto_fix_gaps
-        # for old RuSh rule format (doesn't have PSEUDO and ACTUAL column), make the conversion.
-        if not self.fastner.full_definition:
-            self.backCompatableParseRule()
         self.min_sent_chars = min_sent_chars
         pass
 
-    def backCompatableParseRule(self):
-        for id, rule in self.fastner.rule_store.items():
-            if rule.score % 2 != 0:
-                rule.type = 'PSEUDO'
-        self.fastner.constructRuleMap(self.fastner.rule_store)
-        pass
-
     def segToSentenceSpans(self, text):
-        output = []
-        result = {BEGIN: [], END: []}
-        self.fastner.process(text, 0, result)
+        output = [Span(s.getBegin(), s.getEnd()) for s in self.jrush.segToSentenceSpans(text)]
 
         # log important message for debugging use
         if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
             text = text.replace('\n', ' ')
-            for concept_type, spans in result.items():
-                self.logger.debug(concept_type)
-                for span in spans:
-                    rule = self.fastner.rule_store[span.rule_id]
-                    self.logger.debug(
-                        '\t{0}-{1}:{2}\t{3}<{4}>\t[Rule {5}:\t{6}\t{7}\t{8}\t{9}]'.format(span.begin, span.end,
-                                                                                          span.score,
-                                                                                          text[:span.begin],
-                                                                                          text[
-                                                                                          span.begin:span.begin + 1],
-                                                                                          rule.id, rule.rule,
-                                                                                          rule.rule_name,
-                                                                                          rule.score, rule.type))
-        begins = result[BEGIN]
-        ends = result[END]
-
-        st_begin = 0
-        st_started = False
-        st_end = 0
-        j = 0
-
-        for i in range(0, len(begins)):
-            token = begins[i]
-            if not st_started:
-                st_begin = token.begin
-                if st_begin < st_end:
-                    continue
-                st_started = True
-            elif token.begin < st_end:
-                continue
-
-            if self.auto_fix_gaps and len(output) > 0 and st_begin > output[-1].end:
-                self.fix_gap(output, text, output[-1].end, st_begin, self.min_sent_chars)
-            elif self.auto_fix_gaps and len(output) == 0 and st_begin > 0:
-                self.fix_gap(output, text, 0, st_begin, self.min_sent_chars)
-
-            for k in range(j, len(ends)):
-                if i < len(begins) - 1 and k < len(ends) - 1 and begins[i + 1].begin < ends[k].begin + 1:
-                    break
-                st_end = ends[k].begin + 1
-                j = k
-                while st_end >= 1 and (text[st_end - 1].isspace() or ord(text[st_end - 1]) == 160):
-                    st_end -= 1
-                if st_end < st_begin:
-                    continue
-                elif st_started:
-                    output.append(Span(st_begin, st_end))
-                    st_started = False
-                    if i == len(begins) - 1 or (k < len(ends) - 1 and begins[i + 1].begin > ends[k + 1].end):
-                        continue
-                    break
+        if len(output)>0:
+            for i, span in enumerate(output):
+                if i==0:
+                    span=RuSH.trim_gap(text, 0, span.begin)
                 else:
-                    output[len(output) - 1] = Span(st_begin, st_end)
-                    st_started = False
-        # fix beginning and ending gaps, in case the existing rules will miss some cases
-        if self.auto_fix_gaps:
-            if len(output) > 0:
-                begin_trimed_gap = RuSH.trim_gap(text, 0, output[0].begin)
-                if begin_trimed_gap is not None:
-                    if output[0].begin <= ends[0].begin:
-                        output[0].begin = begin_trimed_gap.begin
-                    else:
-                        output.insert(0, begin_trimed_gap)
-                end_trimed_gap = RuSH.trim_gap(text, output[-1].end, len(text))
-                if end_trimed_gap is not None:
-                    if end_trimed_gap.width > self.min_sent_chars:
-                        output.append(end_trimed_gap)
-                    else:
-                        output[-1].end = end_trimed_gap.end
-            else:
-                trimed_gap = RuSH.trim_gap(text, 0, len(text))
-                if trimed_gap is not None and trimed_gap.width > self.min_sent_chars:
-                    output.append(trimed_gap)
-
-        if self.logger is not None and self.logger.isEnabledFor(logging.DEBUG):
-            for sentence in output:
-                self.logger.debug(
-                    'Sentence({0}-{1}):\t>{2}<'.format(sentence.begin, sentence.end, text[sentence.begin:sentence.end]))
-
+                    previous=output[i-1]
+                    span=RuSH.trim_gap(text, previous.end, span.begin)
+                if span is not None:
+                    output[i]=span
         return output
 
-    @staticmethod
-    def fix_gap(sentences: [], text: str, previous_end: int, this_begin: int, min_sent_chars: int = 5):
-        trimed_gap = RuSH.trim_gap(text, previous_end, this_begin)
-        if trimed_gap is None:
-            return
-        if trimed_gap.width > min_sent_chars:
-            sentences.append(trimed_gap)
-        elif len(sentences) > 0:
-            sentences[-1].end = trimed_gap.end
+    def shutdownJVM(self):
+        self.gateway.shutdown()
 
     @staticmethod
     def trim_gap(text: str, previous_end: int, this_begin: int) -> Span:
