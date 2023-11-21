@@ -1,37 +1,28 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+# need to added here to use cibuildwheel package
+requires = ["setuptools>=61.0.0", "wheel","Cython>=0.25,<3.0","numpy","spacy>=3.0.0, <=3.6","PyFastNER>=1.0.8","quicksectx>=0.3.5"]
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "medspacy"
-authors = [{name = "medSpaCy"}]
-readme = "README.MD"
-description = "Library for clinical NLP with spaCy."
+name = "PyRuSH"
+dynamic = ["version","dependencies","readme"]
+authors = [{name = "Jianlin", email="jianlinshi.cn@gmail.com"}]
+description = "A fast implementation of RuSH (Rule-based sentence Segmenter using Hashing)."
+keywords=['PyFastNER', 'ner', 'regex']
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
-dynamic = ["version"]
 
-# Hatch dependencies
-[tool.hatch.metadata]
-dependencies = [
-    "Cython>=0.25,<3.0",
-    "spacy>=3.0.0,<=3.6",
-    "PyFastNER>=1.0.8",
-    "quicksectx>=0.3.5"
-]
-# If you need to dynamically include dependencies from a requirements.txt file, 
-# this will require a custom script or manual update.
-
-[tool.hatch.version]
-path = "medspacy/VERSION"
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version={file = "PyRuSH/VERSION"}
+readme={file = ['README.rst']}
 
 [project.urls]
-Source = "https://github.com/medspacy/medspacy"
+Source = "https://github.com/medspacy/PyRuSH"
 
-# Include additional package data
-[tool.hatch.envs.default]
-# Specify additional build settings here if necessary
+[tool.setuptools]
+include-package-data = true
